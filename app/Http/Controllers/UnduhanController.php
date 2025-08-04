@@ -8,6 +8,7 @@ use App\Unduhan;
 use App\KatBahasa;
 use App\KatUnduhan;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 
 class UnduhanController extends Controller
@@ -47,6 +48,7 @@ class UnduhanController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input dan file upload
         $request->validate([
             'katbahasa'          => 'required|exists:kat_bahasas,id',
             'katunduhan'         => 'required|exists:kat_unduhans,id',
@@ -55,54 +57,43 @@ class UnduhanController extends Controller
             'bidang_ilmu'        => 'nullable|string|max:255',
             'deskripsi'          => 'nullable|string',
             'pengguna_instrumen' => 'nullable|string',
-            'nama_file'          => 'required|file|mimes:rar,zip,pdf,doc,docx,xlsx,xls,ppt,pptx|max:20480', // 20MB
+            'nama_file'          => 'required|file|mimes:rar,zip,pdf,doc,docx,xlsx,xls,ppt,pptx|max:20480', // max 20MB
         ]);
 
         $id = (string) Str::uuid();
 
+        // Pastikan UUID belum dipakai (opsional)
         if (Unduhan::where('id', $id)->exists()) {
             return back()->with('salah', 'ID sudah digunakan, silakan coba lagi')->with('error', 'ID already exists');
         }
 
-        try {
-            $file     = $request->file('nama_file');
-            $katundh  = KatUnduhan::findOrFail($request->katunduhan);
+        $file     = $request->file('nama_file');
+        $katundh  = KatUnduhan::findOrFail($request->katunduhan);
 
-            $filename = $katundh->namaundh . '-' . date('dmY') . '-' . time() . '.' . $file->getClientOriginalExtension();
+        // Format nama file
+        $filename = $katundh->namaundh . '-' . date('dmY') . '-' . time() . '.' . $file->getClientOriginalExtension();
 
-            // Simpan file ke disk NFS
-            $path = Storage::disk('nfs_documents')->putFileAs('unduhan', $file, $filename);
+        // Simpan file ke disk 'nfs_documents'
+        $path = $file->storeAs('unduhan', $filename, 'nfs_documents');
 
-            if (!$path) {
-                throw new \Exception('Gagal menyimpan file ke disk nfs_documents.');
-            }
+        // Simpan ke database
+        Unduhan::create([
+            'id'                 => $id,
+            'katbahasa_id'       => $request->katbahasa,
+            'katunduhan_id'      => $request->katunduhan,
+            'judul'              => $request->judul,
+            'jenjang'            => $request->jenjang,
+            'bidang_ilmu'        => $request->bidang_ilmu,
+            'deskripsi'          => $request->deskripsi,
+            'pengguna_instrumen' => $request->pengguna_instrumen ?: null,
+            'nama_file'          => $filename,
+        ]);
 
-            // Simpan data ke database
-            Unduhan::create([
-                'id'                 => $id,
-                'katbahasa_id'       => $request->katbahasa,
-                'katunduhan_id'      => $request->katunduhan,
-                'judul'              => $request->judul,
-                'jenjang'            => $request->jenjang,
-                'bidang_ilmu'        => $request->bidang_ilmu,
-                'deskripsi'          => $request->deskripsi,
-                'pengguna_instrumen' => $request->pengguna_instrumen ?: null,
-                'nama_file'          => $filename,
-            ]);
-
-            return redirect()->route('unduhan')
-                ->with('asup', 'Successfully... Save To Database')
-                ->with('success', 'Berhasil... Simpan Data Ke Database');
-        } catch (\Exception $e) {
-            \Log::error('Gagal menyimpan unduhan:', [
-                'message' => $e->getMessage(),
-                'trace'   => $e->getTraceAsString()
-            ]);
-
-            return back()->with('salah', 'Terjadi kesalahan saat menyimpan data atau file.')
-                ->with('error', $e->getMessage());
-        }
+        return redirect()->route('unduhan')
+            ->with('asup', 'Successfully... Save To Database')
+            ->with('success', 'Berhasil... Simpan Data Ke Database');
     }
+
 
 
 
@@ -139,66 +130,53 @@ class UnduhanController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Unduhan $und)
+    public function update(Request $request, Unduhan $und)
     {
+        // Validasi input
+        $request->validate([
+            'katbahasa'          => 'required|exists:kat_bahasas,id',
+            'katunduhan'         => 'required|exists:kat_unduhans,id',
+            'judul'              => 'required|string|max:255',
+            'jenjang'            => 'nullable|string|max:100',
+            'bidang_ilmu'        => 'nullable|string|max:255',
+            'deskripsi'          => 'nullable|string',
+            'pengguna_instrumen' => 'nullable|string',
+            'nama_file'          => 'nullable|file|mimes:rar,zip,pdf,doc,docx,xlsx,xls,ppt,pptx|max:20480',
+        ]);
 
-        $cek    = request('nama_file');
+        $filename = $und->nama_file; // pakai nama lama kalau tidak ada file baru
 
-        if (!empty($cek)) {
+        if ($request->hasFile('nama_file')) {
+            $file       = $request->file('nama_file');
+            $ext        = $file->getClientOriginalExtension();
+            $namaundh   = $und->katunduhan->namaundh ?? 'file';
+            $filename   = $namaundh . '-' . date('dmY') . '-' . time() . '.' . $ext;
 
-            $ext    = request('nama_file')->extension();
-
-            if ($ext == 'rar' || $ext == 'zip' || $ext == 'pdf' || $ext == 'docx' || $ext == 'doc' || $ext == 'xlsx' || $ext == 'xls' || $ext == 'pptx' || $ext == 'ppt') {
-
-                $arr        = [
-                    '.rar',
-                    '.zip',
-                    '.pdf',
-                    '.docx',
-                    '.doc',
-                    '.xlsx',
-                    '.xls',
-                    '.pptx',
-                    '.ppt'
-                ];
-                $aran       = str_replace($arr, '', $und->nama_file);
-                $file       = $aran . '.' . request('nama_file')->getClientOriginalExtension();
-                $old        = rename(
-                    'unduhan/' . $und->nama_file,
-                    'unduhan/' . $file . '-old'
-                );
-                $upload     = request('nama_file')->move(public_path('unduhan/'), $file);
-
-                $und->update([
-                    'katbahasa_id'       => request('katbahasa'),
-                    'katunduhan_id'      => request('katunduhan'),
-                    'judul'              => request('judul'),
-                    'jenjang'            => request('jenjang'),
-                    'bidang_ilmu'        => request('bidang_ilmu'),
-                    'deskripsi'          => request('deskripsi'),
-                    'pengguna_instrumen' => empty(request('pengguna_instrumen')) ? null : request('pengguna_instrumen'),
-                    'nama_file'          => $file
-                ]);
-
-                return redirect()->route('unduhan')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-            } else {
-
-                return back()->withsalah('File Bukan .rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt')->witherror('Bentuk File Extensi Harus .rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt');
+            // Hapus file lama jika ada
+            $oldFilePath = 'unduhan/' . $und->nama_file;
+            if ($und->nama_file && Storage::disk('nfs_documents')->exists($oldFilePath)) {
+                Storage::disk('nfs_documents')->delete($oldFilePath);
             }
-        } else {
 
-            $und->update([
-                'katbahasa_id'       => request('katbahasa'),
-                'katunduhan_id'      => request('katunduhan'),
-                'judul'              => request('judul'),
-                'jenjang'            => request('jenjang'),
-                'bidang_ilmu'        => request('bidang_ilmu'),
-                'pengguna_instrumen' => empty(request('pengguna_instrumen')) ? null : request('pengguna_instrumen'),
-                'deskripsi'          => request('deskripsi')
-            ]);
-
-            return redirect()->route('unduhan')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
+            // Simpan file baru
+            $file->storeAs('unduhan', $filename, 'nfs_documents');
         }
+
+        // Update database
+        $und->update([
+            'katbahasa_id'       => $request->katbahasa,
+            'katunduhan_id'      => $request->katunduhan,
+            'judul'              => $request->judul,
+            'jenjang'            => $request->jenjang,
+            'bidang_ilmu'        => $request->bidang_ilmu,
+            'deskripsi'          => $request->deskripsi,
+            'pengguna_instrumen' => $request->pengguna_instrumen ?: null,
+            'nama_file'          => $filename,
+        ]);
+
+        return redirect()->route('unduhan')
+            ->with('asup', 'Successfully... Update To Database')
+            ->with('success', 'Berhasil... Update Data Ke Database');
     }
 
     /**
