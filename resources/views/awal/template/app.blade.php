@@ -363,15 +363,14 @@
                                             <div class="col">
                                                 <h5><b>Akreditasi LAM-PTKes</b></h5>
                                                 <ul class="fa-ul text-s space-y-4" style="margin-bottom: 1rem;">
-                                                    <li>
+                                                    {{-- <li>
                                                         <i class="fa-li fa fa-list"></i>
                                                         <a href="{{ route('iakresembilan') }}">
-                                                            {{-- Instrumen 9 Kriteria --}}
-                                                            Instrumen APS Kuantitatif
+                                                            Instrumen 9 Kriteria
                                                             <sup style="color: red">(2020 - 2024)</sup>
 
                                                         </a>
-                                                    </li>
+                                                    </li> --}}
                                                     <li>
                                                         <i class="fa-li fa fa-list"></i>
                                                         <a href="{{ route('iakreminimum') }}">Instrumen Izin Prodi
