@@ -1,0 +1,161 @@
+@extends('admin.template.app')
+@section('title')
+    Tambah Berita
+@endsection
+@section('content')
+<script type="text/javascript">
+    $(function() {
+        $('#box').hide(); 
+        $('#katberita').change(function(){
+            if($('#katberita').val() == '{{ $regulid->id }}') {
+                $('#box').show();
+                $('#kat_regulasi').attr('required', true);
+            } else {
+                $('#box').hide(); 
+                $('#kat_regulasi').attr('required', false);
+            } 
+        });
+    });
+
+    $(document).ready(function(){
+            $("#example-modal-alert").modal('show');
+
+        });
+    
+</script>
+
+    <main id="js-page-content" role="main" class="page-content">
+        <ol class="breadcrumb page-breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0);"> Berita</a></li>
+            <li class="breadcrumb-item">Tambah Berita</li>
+            <li class="position-absolute pos-top pos-right d-none d-sm-block"><span>{{ date('d F Y')}}</span></li>
+        </ol>
+        <div class="subheader">
+            <h1 class="subheader-title">
+                <i class='subheader-icon fal fa-table'></i> Tambah Berita: <span class='fw-300'></span>
+            </h1>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div id="panel-1" class="panel">
+                    <div class="panel-hdr">
+                        <h2>
+                            Form <span class="fw-300"><i>Tambah Berita</i></span>
+                        </h2>
+                        <div class="panel-toolbar">
+                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
+                        </div>
+                    </div>
+                    <div class="panel-container show">
+                        <div class="panel-content">
+                            @include('admin.template.partials._alerts')
+
+                            <br><br> 
+                            
+                            <form method="post" action="{{ route('berita.store') }}" class="was-validated" enctype="multipart/form-data">
+                                {{ csrf_field() }}
+                                {{ method_field('POST') }}
+
+                                
+                                <div class="form-group">
+                                    <label class="form-label" for="judul">Judul Berita</label>
+                                    <input type="text" name="judul" id="judul" class="form-control is-valid" maxlength="191"  required="" >
+                                    <div class="invalid-feedback">Wajib Di isi</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="katbahasa">Kategori Bahasa</label>
+                                    <select name="katbahasa" id="katbahasa" class="form-control is-valid" required="">
+                                        <option value>Select</option>
+                                        @foreach($katbhs as $bhs)
+                                            <option value="{{ $bhs->id }}">{{ $bhs->namakbhs }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">Wajib Di isi</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="katberita">Kategori Berita</label>
+                                    <select name="katberita" id="katberita" class="form-control is-valid" required="">
+                                        <option value>Select</option>
+                                        @foreach($katbrt as $brt)
+                                            <option value="{{ $brt->id }}">{{ $brt->namakbrt }}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">Wajib Di isi</div>
+                                </div>
+
+                                <div class="form-group" id="box">
+                                    <label class="form-label" for="kat_regulasi">Kategori Regulasi</label>
+                                    <select name="kat_regulasi" id="kat_regulasi" class="form-control is-valid" required="">
+                                        <option value>Select</option>
+                                        <option value="Undang-Undang">Undang-Undang</option>
+                                        <option value="Peraturan Presiden">Peraturan Presiden</option>
+                                        <option value="Peraturan Pemerintah">Peraturan Pemerintah</option>
+                                        <option value="Peraturan Menteri">Peraturan Menteri</option>
+                                        <option value="Peraturan BAN-PT">Peraturan BAN-PT</option>
+                                        <option value="Peraturan LAM-PTKes">Peraturan LAM-PTKes</option>
+                                    </select>
+                                    <div class="invalid-feedback">Wajib Di isi</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="is_show">Status Publikasi</label>
+                                    <select name="is_show" id="is_show" class="form-control is-valid" required="">
+                                        <option value>Select</option>
+                                        <option value="1">Publish</option>
+                                        <option value="0">Unpublish</option>
+                                    </select>
+                                    <div class="invalid-feedback">Wajib Di isi</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="headline_news">Headline News</label>
+                                    <select name="headline_news" id="headline_news" class="form-control is-valid" required="">
+                                        <option value>Select</option>
+                                        <option value="Ya">Ya</option>
+                                        <option value="Tidak">Tidak</option>
+                                    </select>
+                                    <div class="invalid-feedback">Wajib Di isi</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="file_gambar">
+                                        Image Berita 
+                                        <p style="color: red;">
+                                            * (Gambar Berita Harus 960x640(px))
+                                        </p> 
+                                    </label>
+                                    <input type="file" name="file_gambar" id="file_gambar" class="form-control is-valid" accept=".png, .jpg, .jpeg" >
+                                    <div class="invalid-feedback">Wajib Di isi</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="form-label" for="isi">Isi Berita</label>
+                                    <textarea name="isi" id="isi" class="form-control is-valid js-summernote" required=""></textarea>
+                                    <div class="invalid-feedback"><i class="fas fa-hand-point-up fa-2x"></i>   Wajib Di isi</div>
+                                </div>
+
+                                <center>
+                                    <a href="{{ route('berita') }}" title="">
+                                        <button type="button" class="btn btn-outline-warning" data-template='<div class="tooltip" role="tooltip"><div class="tooltip-inner bg-dark-500"></div></div>' data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Kembali">
+                                            <i class="fas fa-reply mr-1"></i>Back
+                                        </button>
+                                    </a>
+
+                                    <button type="submit" class="btn btn-outline-success" data-template='<div class="tooltip" role="tooltip"><div class="tooltip-inner bg-dark-500"></div></div>' data-placement="bottom" data-toggle="tooltip" title="" data-original-title="Simpan">
+                                        Save  <i class="fas fa-share mr-1"></i>
+                                    </button>
+                                </center>
+                            </form>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+@endsection

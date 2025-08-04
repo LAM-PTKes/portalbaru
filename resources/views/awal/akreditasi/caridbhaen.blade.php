@@ -1,0 +1,98 @@
+@extends('awal.template.appen')
+@section('title', 'Directory of Accreditation Results - IAAHEH')
+@section('content')
+
+<div class="header-base">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-9">
+                    <div class="title-base text-left">
+                        <h1>Accreditation Results IAAHEH</h1>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <ol class="breadcrumb b white">
+                        <li><a href="{{ url('/en') }}">Home</a></li>
+                        <li><a href="#">Pages</a></li>
+                        <li class="active">Accreditation Results IAAHEH</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+   <div class="section-empty section-item">
+        <div class="container content">
+             <div class="row">
+                <div class="col-12">
+                    <div class="card-box table-responsive">
+                    	<div class="col-12">
+                    		{{-- <h4>Search Result: {{ $cari1 }} {{ $cari2 }}  {{ $cari3 }} {{ $cari5 }} {{ $cari6 }}</h4>
+                            	<br> --}}
+                    	</div>
+                    	<center>
+							<a href="{{ route('cdhaen') }}">
+								<button type="button" name="ok" class="anima-button btn-sm btn">
+									<i class="fa fa-eye" aria-hidden="true"></i> 
+										Show All
+								</button>
+							</a>
+						</center>
+
+                        <table id="key-table" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>No</th>
+								<th>Level</th>
+								<th>Name of Institution</th>
+								<th>Name of Study Program</th>
+								<th>SK Number</th>
+								<th>Year of Issue:</th>
+								<th>Rank of Accreditation:</th>
+								<th>Expiration Date:</th>
+								<th>Expiration Status:</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($hasil as $v)
+								<tr>
+									<td>{{ $no++ }}</td>
+									<td>
+                                        {{ str_replace($lvl, $glvl, $v->jenjang) }}
+                                    </td>
+									<td>{{ $v->nama_pt }}</td>
+                                    {{-- <td>{{ $v->nama_ps }}</td> --}}
+									<td>{{ str_replace($nmps, $gnmps, $v->nama_ps) }}</td>
+									<td>{{ $v->no_sk }}</td>
+									<td>{{ $v->thn_sk}}</td>
+									<td align="center">
+										{{ str_replace($peringkat, $ganti, $v->peringkat_akademis) }}
+										{{ str_replace($peringkat, $ganti, $v->peringkat_profesi) }}
+										{{ str_replace($peringkat, $ganti, $v->peringkat_spesialis) }}
+									</td>
+									<td>
+                                        @if($v->tgl_kadaluarsa)
+                                            {{ date('d F Y', strtotime($v->tgl_kadaluarsa)) }}
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+									<td>
+                                        @if($v->tgl_kadaluarsa < date('Y-m-d'))
+                                            EXPIRED
+                                        @elseif(empty($v->status_kadaluarsa))
+                                            NOT ACCREDITED
+                                        @else
+                                            {{ str_replace($statuscari, $statusganti, $v->status_kadaluarsa) }}
+                                        @endif
+                                    </td>
+								</tr>
+							@endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div> <!-- end row -->
+        </div>
+    </div>
+
+@endsection	

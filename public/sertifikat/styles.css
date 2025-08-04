@@ -1,0 +1,121 @@
+@page {
+    size: A4 landscape;
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Times New Roman', serif;
+    color: #000;
+}
+
+.certificate {
+    width: 29.7cm; 
+    height: 21cm; 
+    position: relative;
+    box-sizing: border-box;
+    background-image: url('sertifikat.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff; 
+    padding: 1cm; 
+    margin: 0;
+    overflow: hidden;
+}
+
+.content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: calc(100% - 2cm); 
+    text-align: center;
+    z-index: 2; 
+}
+
+.description h1, .description h2, .description p {
+    margin: 0;
+    color: #000;
+}
+
+.description h1 {
+    font-size: 26pt; 
+    font-weight: bold;
+    margin: 20px 0 0 -15px 0;
+    color: #000;
+}
+
+.description h2 {
+    font-size: 2.5cm; 
+    color: #000;
+}
+
+.description p {
+    font-size: 18px;
+    line-height: 1;
+    font-weight: bold;
+    color: #000;
+}
+
+.mid p {
+    font-size: 16px;
+    margin: 10px 0;
+    line-height: 0.5;
+    color: #000;
+
+}
+.midi h2 {
+    color: #000;
+}
+
+.midi h3 {
+    margin: 5px;
+    color: #000;
+}
+.duedate {
+    color: #000;
+}
+
+.footer {
+    position: absolute;
+    bottom: 1cm;
+    left: 1cm;
+    right: 1cm;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 2; 
+}
+.qrcode {
+    margin: -350px 0 10px 50px;
+}
+
+.qrcode img {
+    width: 3cm; 
+    height: 3cm; 
+}
+
+.date-name {
+    font-size: 16px;
+    margin: -90px 30px 0 0 ;
+    line-height: 0.5;
+    color: #000;
+    text-align: center;
+}
+.date-name .name {
+    text-decoration: underline;
+    margin: 80px 0 5px 0;
+}
+
+@media print {
+    .certificate {
+        padding: 1cm;
+        margin: 0;
+    }
+    .content {
+        width: calc(100% - 2cm);
+        margin: 0;
+    }
+}

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" lang="en" style="height: 100%"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, maximum-scale=5">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+
+  <title>@yield('title')</title> 
+
+<style>
+</style>
+
+ <style>:root {
+    --underline-text-color: #00bff3;
+    --root-document-scale : 1.0;
+}
+
+.creatorTextElem {
+    text-decoration: inherit;
+    text-decoration-color: inherit;
+}
+
+.creatorTextElem:hover {
+    text-decoration: underline;
+    text-decoration-color: #00bff3;
+}
+
+.websiteBody {
+  margin: 0;
+}
+
+.toolboxIcon {
+    opacity: 0.8;
+    margin-left: -4px;
+    width: 24px;
+    height: 25px;
+}
+
+.toolboxIcon:hover {
+    opacity: 1;
+    /* border: 1px solid grey;
+    border-radius: 3px; */
+}
+
+[contenteditable] {
+    outline: 3px solid #00bff3;
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+/* .creatorTextElem > a {
+    cursor: pointer;
+    color: unset;
+} */
+
+a {
+    cursor: pointer;
+    color: unset;
+}</style> 
+</head>
+
+<?php 
+  function tanggal($format,$nilai="now"){
+  $en=array("Sun","Mon","Tue","Wed","Thu","Fri","Sat","Jan","Feb",
+  "Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+  $id=array("Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu",
+  "Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September",
+  "Oktober","November","Desember");
+  return str_replace($en,$id,date($format,strtotime($nilai)));
+  }
+
+  $tgl_sk = $result[0]->tgl_sk;
+
+  $tanggal_sk = strtotime($tgl_sk);
+  $tanggal_sk = date('d-m-Y', $tanggal_sk);
+  $tanggal_sk = tanggal("j M Y",$tanggal_sk);
+
+  $tgl_sk_akhir = $result[0]->tgl_sk_akhir;
+
+  $tanggal_sk_akhir = strtotime($tgl_sk_akhir);
+  $tanggal_sk_akhir = date('d-m-Y', $tanggal_sk_akhir);
+  $tanggal_sk_akhir = tanggal("j M Y",$tanggal_sk_akhir);
+
+?>
+
+<body class="websiteBody" onunload="" style="background: rgb(255, 255, 255);">
+  <div id="websitediv"><div id="q1" data-guid="Artboards" data-oldguid="Artboards" data-name="Artboards" data-displayname="undefined" data-df="false" data-originaldisplayname="undefined" data-type="group" data-x="0" data-y="0" data-computedx="0" data-computedy="0" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-angle="0" data-originx="0.5" data-originy="0.5" data-position="absolute" style="pointer-events: none; display: block; position: absolute; transform: translateX(51px); width: 1263px; height: 892.5px; padding: 0px; margin: 0px; overflow: hidden; background: rgb(255, 255, 255);"><div id="q2" data-guid="51048:126:5" data-oldguid="A4 - 1" data-name="A4 - 1" data-displayname="A4 - 1" data-df="false" data-originaldisplayname="A4 - 1" data-type="group" data-x="0" data-y="0" data-computedx="0" data-computedy="0" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="false" data-angle="0" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="0" data-y-orig="0" data-width-orig="" data-height-orig="" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="false" data-name-orig="A4 - 1" style="pointer-events: none; display: block; background: rgb(255, 255, 255); position: absolute; transform: none;"><img width="842" height="595" src="{{ asset('sertifikat/Untitled_2_1.webp') }}" data-src="{{ asset('sertifikat/Untitled_2_1.webp') }}" data-ab="A4 - 1" data-q-name="{{ asset('sertifikat/Untitled_2_1.png') }}" data-elementtype="image" alt="Untitled-2 1" id="q3" data-guid="51048:127:2" data-oldguid="Untitled-2 1" data-name="Untitled-2 1" data-displayname="Untitled-2 1" data-type="element" data-x="421" data-y="298" data-width="842" data-height="595" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-angle="0" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="298" data-width-orig="842" data-height-orig="595" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="Untitled-2 1" style="pointer-events: none; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 149.5px) scale(1.5, 1.5) rotate(0deg);" data-xoffset="0" data-yoffset="0"><div id="q4" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="26px" data-ch="33" data-angle="0" data-text="SERTIFIKAT AKREDITASI" data-guid="51048:127:4" data-oldguid="SERTIFIKAT" data-name="SERTIFIKAT AKREDITASI" data-displayname="SERTIFIKAT" data-type="element" data-elementtype="text" data-x="421" data-y="192" data-width="842" data-height="38" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="192" data-width-orig="842" data-height-orig="38" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="SERTIFIKAT AKREDITASI" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="26px" data-text-orig="SERTIFIKAT AKREDITASI" data-lineheight-orig="" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 26px; width: 843px; height: 38px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 269px) scale(1.5, 1.5) rotate(0deg);">SERTIFIKAT AKREDITASI</div><div id="q5" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="14px" data-hm="true" data-lineheight="16.8px" data-ch="18" data-angle="0" data-text="PERKUMPULAN LEMBAGA AKREDITASI MANDIRI
+PENDIDIKAN TINGGI KESEHATAN INDONESIA" data-guid="51048:145:2" data-oldguid="PERKUMPULA" data-name="PERKUMPULAN LEMBAGA AKREDITASI MANDIRI PENDIDIKAN TINGGI KESEHATAN INDONESIA" data-displayname="PERKUMPULA" data-type="element" data-elementtype="text" data-x="421" data-y="229" data-width="842" data-height="35" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="229" data-width-orig="842" data-height-orig="35" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="PERKUMPULAN LEMBAGA AKREDITASI MANDIRI PENDIDIKAN TINGGI KESEHATAN INDONESIA" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="14px" data-text-orig="PERKUMPULAN LEMBAGA AKREDITASI MANDIRI
+PENDIDIKAN TINGGI KESEHATAN INDONESIA" data-lineheight-orig="16.8px" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 14px; width: 843px; height: 35px; line-height: 16.8px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 326px) scale(1.5, 1.5) rotate(0deg);">PERKUMPULAN LEMBAGA AKREDITASI MANDIRI<br style="pointer-events: none;">PENDIDIKAN TINGGI KESEHATAN INDONESIA</div><div id="q6" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="12px" data-hm="true" data-lineheight="14.399999999999999px" data-ch="15" data-angle="0" data-text="Berdasarkan Keputusan LAM-PTKes
+0047/LAM-PTKes/Akr/Sar/I/2020" data-guid="51048:145:3" data-oldguid="Berdasarka" data-name="Berdasarkan Keputusan LAM-PTKes 0047/LAM-PTKes/Akr/Sar/I/2020" data-displayname="Berdasarka" data-type="element" data-elementtype="text" data-x="421" data-y="274" data-width="842" data-height="34" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="274" data-width-orig="842" data-height-orig="34" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="Berdasarkan Keputusan LAM-PTKes 0047/LAM-PTKes/Akr/Sar/I/2020" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="12px" data-text-orig="Berdasarkan Keputusan LAM-PTKes
+0047/LAM-PTKes/Akr/Sar/I/2020" data-lineheight-orig="14.399999999999999px" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; width: 843px; height: 34px; line-height: 14.4px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 394px) scale(1.5, 1.5) rotate(0deg);">Berdasarkan Keputusan LAM-PTKes<br style="pointer-events: none;">{{ $result[0]->no_sk }}</div><div id="q7" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="12px" data-hm="true" data-lineheight="14.399999999999999px" data-ch="15" data-angle="0" data-text="<?php echo (stripos($nama_ps,'PENDIDIKAN PROFESI') !== FALSE) ? '' : $jenjang ?> {{ $nama_ps }}
+{!! strtoupper($nama_pt ) !!}" data-guid="51048:145:6" data-oldguid="<?php echo (stripos($nama_ps,'PENDIDIKAN PROFESI') !== FALSE) ? '' : $jenjang ?> {{ $nama_ps }}" data-name="<?php echo (stripos($nama_ps,'PENDIDIKAN PROFESI') !== FALSE) ? '' : $jenjang ?> {{ $nama_ps }} {!! strtoupper($nama_pt ) !!}" data-displayname="{{ $jenjang }}GI" data-type="element" data-elementtype="text" data-x="421" data-y="333" data-width="842" data-height="31" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="333" data-width-orig="842" data-height-orig="31" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="<?php echo (stripos($nama_ps,'PENDIDIKAN PROFESI') !== FALSE) ? '' : $jenjang ?> {{ $nama_ps }} {!! strtoupper($nama_pt ) !!}" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="12px" data-text-orig="<?php echo (stripos($nama_ps,'PENDIDIKAN PROFESI') !== FALSE) ? '' : $jenjang ?> {{ $nama_ps }}
+{!! strtoupper($nama_pt ) !!}" data-lineheight-orig="14.399999999999999px" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; width: 843px; height: 31px; line-height: 14.4px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 484px) scale(1.5, 1.5) rotate(0deg);"><?php echo (stripos($nama_ps,'PENDIDIKAN PROFESI') !== FALSE) ? '' : $jenjang ?> {{ $nama_ps }}<br style="pointer-events: none;">{!! strtoupper($nama_pt ) !!}</div><div id="q8" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="18px" data-ch="23" data-angle="0" data-text="Terakreditasi {{ $result[0]->rank_prodi }}" data-guid="51048:145:7" data-oldguid="Terakredit" data-name="Terakreditasi {{ $result[0]->rank_prodi }}" data-displayname="Terakredit" data-type="element" data-elementtype="text" data-x="421" data-y="376" data-width="842" data-height="33" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="376" data-width-orig="842" data-height-orig="33" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="Terakreditasi {{ $result[0]->rank_prodi }}" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="18px" data-text-orig="Terakreditasi {{ $result[0]->rank_prodi }}" data-lineheight-orig="" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 18px; width: 843px; height: 33px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 547.5px) scale(1.5, 1.5) rotate(0deg);">Terakreditasi {{ $result[0]->rank_prodi }}</div><div id="q9" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="12px" data-ch="15" data-angle="0" data-text="Menyatakan :" data-guid="51048:145:4" data-oldguid="Menyatakan" data-name="Menyatakan :" data-displayname="Menyatakan" data-type="element" data-elementtype="text" data-x="421" data-y="304" data-width="842" data-height="26" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="304" data-width-orig="842" data-height-orig="26" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="Menyatakan :" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="12px" data-text-orig="Menyatakan :" data-lineheight-orig="" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; width: 843px; height: 26px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 443px) scale(1.5, 1.5) rotate(0deg);">Menyatakan :</div><div id="q10" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="12px" data-ch="15" data-angle="0" data-text="Sertifikat akreditasi berlaku sampai dengan tanggal, <?php echo $tanggal_sk_akhir?>" data-guid="51048:145:8" data-oldguid="Sertifikat" data-name="Sertifikat akreditasi berlaku sampai dengan tanggal, <?php echo $tanggal_sk_akhir?>" data-displayname="Sertifikat" data-type="element" data-elementtype="text" data-x="421" data-y="407" data-width="842" data-height="15" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="421" data-y-orig="407" data-width-orig="842" data-height-orig="15" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="Sertifikat akreditasi berlaku sampai dengan tanggal, <?php echo $tanggal_sk_akhir?>" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="12px" data-text-orig="Sertifikat akreditasi berlaku sampai dengan tanggal, <?php echo $tanggal_sk_akhir?>" data-lineheight-orig="" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; width: 843px; height: 15px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(210.5px, 603px) scale(1.5, 1.5) rotate(0deg);">Sertifikat akreditasi berlaku sampai dengan tanggal, <?php echo $tanggal_sk_akhir?></div><div id="q11" data-fontfamily="Song Myung" data-fontweight="400" data-fontsize="12px" data-hm="true" data-lineheight="14.399999999999999px" data-ch="15" data-angle="0" data-guid="51048:148:0" data-oldguid="Jakarta, <?php echo $tanggal_sk?>" data-name="Jakarta, <?php echo $tanggal_sk?> Prof. dr. Usman Chatib Warsa, Sp.MK., PhD Ketua" data-displayname="Jakarta, <?php echo $tanggal_sk?>" data-type="element" data-elementtype="text" data-x="667" data-y="494" data-width="267" data-height="93" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="667" data-y-orig="494" data-width-orig="267" data-height-orig="93" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="Jakarta, <?php echo $tanggal_sk?> Prof. dr. Usman Chatib Warsa, Sp.MK., PhD Ketua" data-fontfamily-orig="Song Myung" data-fontweight-orig="400" data-fontsize-orig="12px" data-text-orig="" data-lineheight-orig="14.399999999999999px" data-letterspacing-orig="" data-xoffset="0" data-yoffset="0" style="cursor: text; pointer-events: auto; white-space: pre-wrap; color: rgb(0, 0, 0); text-align: center; font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; width: 268px; height: 93px; line-height: 14.4px; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(867px, 694.5px) scale(1.5, 1.5) rotate(0deg);"><span style="display: inline; pointer-events: auto; color: rgb(0, 0, 0); font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; text-decoration: none;">Jakarta, <?php echo $tanggal_sk?><br style="pointer-events: none;"><br style="pointer-events: none;"><br style="pointer-events: none;"><br style="pointer-events: none;"><br style="pointer-events: none;"></span><span style="display: inline; pointer-events: auto; color: rgb(0, 0, 0); font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; text-decoration: underline;">Prof. dr. Usman Chatib Warsa, Sp.MK., PhD<br style="pointer-events: none;"></span><span style="display: inline; pointer-events: auto; color: rgb(0, 0, 0); font-style: normal; font-weight: 400; font-family: &quot;Song Myung&quot;, sans-serif; font-size: 12px; text-decoration: none;">Ketua</span></div><img width="259" height="83" src="{{ asset('sertifikat/ucw.webp') }}" data-src="{{ asset('sertifikat/ucw.webp') }}" data-ab="A4 - 1" data-q-name="{{ asset('sertifikat/ucw.png') }}" data-elementtype="image" alt="ucw" id="q12" data-guid="51048:155:0" data-oldguid="ucw" data-name="ucw" data-displayname="ucw" data-type="element" data-x="660" data-y="492" data-width="259" data-height="83" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="true" data-angle="0" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="660" data-y-orig="481" data-width-orig="259" data-height-orig="83" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="true" data-name-orig="ucw" style="pointer-events: none; opacity: 1; display: block; position: absolute; transform: translate3d(0px, 0px, 0px) translate(860.5px, 696.5px) scale(1.5, 1.5) rotate(0deg);" data-xoffset="0" data-yoffset="0"><img width="69" height="28" src="{{ asset('sertifikat/ucw.webp') }}" data-q-name="{{ asset('sertifikat/ucw.png') }}" data-elementtype="image" alt="ucwnewsignin 1" id="q13" data-guid="51048:152:3" data-oldguid="ucwnewsignin 1" data-name="ucwnewsignin 1" data-displayname="ucwnewsignin 1" data-type="element" data-x="731" data-y="537" data-width="69" data-height="28" data-scalex="1" data-scaley="1" data-alpha="1" data-visible="false" data-angle="0" data-originx="0.5" data-originy="0.5" data-position="absolute" data-x-orig="731" data-y-orig="537" data-width-orig="69" data-height-orig="28" data-scalex-orig="1" data-scaley-orig="1" data-angle-orig="0" data-alpha-orig="1" data-visible-orig="false" data-name-orig="ucwnewsignin 1" style="pointer-events: none; opacity: 1; display: none; position: absolute; transform: translate3d(0px, 0px, 0px) translate(1062px, 791.5px) scale(1.5, 1.5) rotate(0deg);" data-xoffset="0" data-yoffset="0"></div></div></div>
+
+ 
+
+</body>  
+
+
+</body></html>
