@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\InfoGrafis;
 use App\KatBahasa;
@@ -11,18 +11,17 @@ use App\KatBahasa;
 
 class InfoGrafisController extends Controller
 {
-	/**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-		$no         = 1;
-		$infografis = InfoGrafis::latest()->get();
+        $no         = 1;
+        $infografis = InfoGrafis::latest()->get();
 
-        return view('admin.infografis.infografis', compact('no','infografis'));
-
+        return view('admin.infografis.infografis', compact('no', 'infografis'));
     }
 
     /**
@@ -45,62 +44,41 @@ class InfoGrafisController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi form
+        $request->validate([
+            'katbahasa_id' => 'required|exists:kat_bahasas,id',
+            'judul'        => 'required|string|max:255',
+            'publikasi'    => 'nullable|string',
+            'deskripsi'    => 'nullable|string',
+            'gambar'       => 'required|file|mimes:jpeg,jpg,png|max:25600', // 25MB = 25600KB
+        ]);
 
-        $id     = str_replace('-', '', Str::uuid());
-        $cekid  = InfoGrafis::where('id', $id)->get();
-
-        if (count($cekid) == 0) {
-
-            $ext     = request('gambar')->extension();
-            $sizemax = '26214400'; // 25 Mb
-            $size    = filesize(request('gambar'));
-
-            if ($ext == 'jpeg' || $ext == 'jpg' || $ext == 'png') {
-
-                if ($size <= $sizemax) {
-
-                    $file       = 'File-infografis-'.date('dmY').
-                                    '-'.time().'.'.request('gambar')
-                                    ->getClientOriginalExtension();
-                    $upload     = request('gambar')
-                                    ->move(public_path('infografis/'), strtolower($file));
-
-                    $asup   = InfoGrafis::create([
-								'id'           => $id,
-								'katbahasa_id' => request('katbahasa_id'),
-								'judul'        => request('judul'),
-								'publikasi'    => request('publikasi'),
-								'deskripsi'    => request('deskripsi'),
-								'gambar'       => strtolower($file)
-                            ]);
-
-                    return redirect()
-                                ->route('igrafis')
-                                // ->withasup('Successfully... Save To Database')
-                                ->withsuccess('Berhasil... Simpan Data Ke Database');
-                    
-                }else {
-                
-                    return back()
-                            // ->withsalah('Failed... Input Data')
-                            ->witherror('File Terlalu Besar,  Max Upload File 25 Mb');
-                    
-                }
-                
-            }else {
-                
-                return back()
-                        // ->withsalah('Failed... Input Data')
-                        ->witherror('Extensi File infografis Bukan .jpeg, .jpg, .png  Mohon Upload File Yang Benar');
-            }
-
-        }else {
-
-            return back()
-                        // ->withsalah('Data Gagal Di Simpan Ke Database Id Sudah Digunakan')
-                        ->witherror('Failled... Save To Database Id Already Used');
+        // Generate ID dan nama file
+        $id = (string) Str::uuid();
+        if (InfoGrafis::where('id', $id)->exists()) {
+            return back()->with('salah', 'ID sudah digunakan')->with('error', 'ID Already Used');
         }
-        
+
+        $file     = $request->file('gambar');
+        $ext      = $file->getClientOriginalExtension();
+        $filename = 'file-infografis-' . date('dmY') . '-' . time() . '.' . strtolower($ext);
+
+        // Simpan file ke disk 'nfs_documents'
+        $path = $file->storeAs('unduhan', $filename, 'nfs_documents');
+
+        // Simpan ke database
+        InfoGrafis::create([
+            'id'           => str_replace('-', '', $id),
+            'katbahasa_id' => $request->katbahasa_id,
+            'judul'        => $request->judul,
+            'publikasi'    => $request->publikasi,
+            'deskripsi'    => $request->deskripsi,
+            'gambar'       => $filename,
+        ]);
+
+        return redirect()->route('igrafis')
+            ->withasup('Successfully... Save To Database')
+            ->withsuccess('Berhasil... Simpan Data Ke Database');
     }
 
     /**
@@ -109,10 +87,7 @@ class InfoGrafisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -125,8 +100,7 @@ class InfoGrafisController extends Controller
 
         $katbhs = KatBahasa::orderby('namakbhs')->get();
 
-        return view('admin.infografis.einfografis', compact('ifg','katbhs'));
-
+        return view('admin.infografis.einfografis', compact('ifg', 'katbhs'));
     }
 
     /**
@@ -136,72 +110,47 @@ class InfoGrafisController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(infografis $ifg)
+    public function update(Request $request, Infografis $ifg)
     {
-        
-        if (!empty(request('gambar'))) {
+        // Validasi input
+        $request->validate([
+            'katbahasa_id' => 'required|exists:kat_bahasas,id',
+            'judul'        => 'required|string|max:255',
+            'publikasi'    => 'required|string',
+            'deskripsi'    => 'nullable|string',
+            'gambar'       => 'nullable|file|mimes:jpeg,jpg,png|max:25600', // Max 25MB
+        ]);
 
-            $ext     = request('gambar')->extension();
-            $sizemax = '26214400'; // 25 Mb
-            $size    = filesize(request('gambar'));
+        $filename = $ifg->gambar;
 
-            if ($ext == 'jpeg' || $ext == 'jpg' || $ext == 'png') {
+        if ($request->hasFile('gambar')) {
+            $file     = $request->file('gambar');
+            $ext      = $file->getClientOriginalExtension();
+            $judul    = Str::slug($request->judul ?? 'infografis');
+            $filename = $judul . '-' . now()->format('dmY-His') . '.' . $ext;
 
-                if ($size <= $sizemax) {
-
-                    $arr    = ['.jpeg','.jpg','.png'];
-                    $aran   = str_replace($arr, '', $ifg->gambar);
-                    $file   = $aran.'.'.request('gambar')
-                                    ->getClientOriginalExtension();
-                    $old    = rename('infografis/'.$ifg->gambar, 
-                                'infografis/'.$file.'-old');
-                    $upload = request('gambar')
-                                    ->move(public_path('infografis/'), $file);
-
-                    $ifg->update([
-								'katbahasa_id' => request('katbahasa_id'),
-								'judul'        => request('judul'),
-								'publikasi'    => request('publikasi'),
-								'deskripsi'    => request('deskripsi'),
-								'gambar'       => $file
-                            ]);
-
-                    return redirect()
-                                ->route('igrafis')
-                                // ->withasup('Successfully... Update To Database')
-                                ->withsuccess('Berhasil... Update Database');
-                    
-                }else {
-                
-                    return back()
-                            // ->withsalah('Failed... Input Data')
-                            ->witherror('File Terlalu Besar,  Max Upload File 25 Mb');
-                    
-                }
-                
-            }else {
-                
-                return back()
-                        // ->withsalah('Failed... Input Data')
-                        ->witherror('Extensi File infografis Bukan .jpeg, .jpg, .png  Mohon Upload File Yang Benar');
+            // Hapus file lama jika ada
+            $oldPath = 'unduhan/' . $ifg->gambar;
+            if ($ifg->gambar && Storage::disk('nfs_documents')->exists($oldPath)) {
+                Storage::disk('nfs_documents')->delete($oldPath);
             }
-            
-        }else{
 
-            $ifg->update([
-						'katbahasa_id' => request('katbahasa_id'),
-						'judul'        => request('judul'),
-						'publikasi'    => request('publikasi'),
-						'deskripsi'    => request('deskripsi')
-                    ]);
-
-            return redirect()
-                        ->route('igrafis')
-                        // ->withasup('Successfully... Update To Database')
-                        ->withsuccess('Berhasil... Update Database');
-
+            // Simpan file baru
+            $file->storeAs('unduhan', $filename, 'nfs_documents');
         }
 
+        // Update database
+        $ifg->update([
+            'katbahasa_id' => $request->katbahasa_id,
+            'judul'        => $request->judul,
+            'publikasi'    => $request->publikasi,
+            'deskripsi'    => $request->deskripsi,
+            'gambar'       => $filename,
+        ]);
+
+        return redirect()->route('igrafis')
+            ->with('asup', 'Successfully... Update To Database')
+            ->with('success', 'Berhasil... Update Data Ke Database');
     }
 
     /**
@@ -213,23 +162,28 @@ class InfoGrafisController extends Controller
     public function destroy(infografis $ifg)
     {
 
-        $arr     = ['.jpeg','.JPEG','.jpg','.JPG','.png','.PNG'];
-        $cfile   = str_replace($arr, '', $ifg->gambar); 
-        $file1   = public_path('infografis/'.$ifg->gambar);
+        $disk = Storage::disk('nfs_documents');
 
-        foreach ($arr as $k) {
+        // Siapkan file paths yang mungkin ada
+        $filePaths = [];
 
-            $file2   = public_path('infografis/'.$cfile.$k.'-old');
-            $delfile = File::delete($file1,$file2);
-
+        if (!empty($cpt->gambar)) {
+            $filePaths[] = 'unduhan/' . $ifg->gambar;
+            $filePaths[] = 'unduhan/' . $ifg->gambar . '-old';
         }
 
+        // Hapus file jika ditemukan
+        foreach ($filePaths as $path) {
+            if ($disk->exists($path)) {
+                $disk->delete($path);
+            }
+        }
 
-            $ifg->delete();
+        // Hapus record dari database
+        $ifg->delete();
 
-            return back()
-                    // ->withhapus('Successfully... Delete From Database')
-                    ->withdelete('Berhasil... Hapus Data Dari Database');
+        return back()
+            ->with('hapus', 'Successfully... Delete From Database')
+            ->with('delete', 'Berhasil... Hapus Data Dari Database');
     }
-
 }

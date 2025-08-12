@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\Berita;
 use App\KatBerita;
 use App\KatBahasa;
@@ -18,10 +19,9 @@ class BeritaController extends Controller
     public function index()
     {
         $no         = 1;
-        $beritas    = Berita::where('is_show','1')->latest()->get();
+        $beritas    = Berita::where('is_show', '1')->latest()->get();
 
-        return view('admin.berita.berita', compact('no','beritas'));
-
+        return view('admin.berita.berita', compact('no', 'beritas'));
     }
 
     /**
@@ -32,10 +32,9 @@ class BeritaController extends Controller
     public function unpublish()
     {
         $no         = 1;
-        $beritas    = Berita::where('is_show','0')->latest()->get();
+        $beritas    = Berita::where('is_show', '0')->latest()->get();
 
-        return view('admin.berita.berita', compact('no','beritas'));
-
+        return view('admin.berita.berita', compact('no', 'beritas'));
     }
 
     /**
@@ -47,11 +46,10 @@ class BeritaController extends Controller
     {
         $katbrt     = KatBerita::orderby('namakbrt')->get();
         $katbhs     = KatBahasa::orderby('namakbhs')->get();
-        $regulid    = KatBerita::where('namakbrt','Regulasi')->first();
-        
-        // return $regulid->id;
-        return view('admin.berita.tberita', compact('katbrt','katbhs','regulid'));
+        $regulid    = KatBerita::where('namakbrt', 'Regulasi')->first();
 
+        // return $regulid->id;
+        return view('admin.berita.tberita', compact('katbrt', 'katbhs', 'regulid'));
     }
 
     /**
@@ -62,81 +60,58 @@ class BeritaController extends Controller
      */
     public function store(Request $request)
     {
-        $cek    = request('file_gambar');
-        $id     = str_replace('-', '', Str::uuid());
-        $cekid  = Berita::where('id', $id)->get();
 
-        if (count($cekid) == 0) {
+        // Validasi input
+        $request->validate([
+            'katbahasa'      => 'required|exists:kat_bahasas,id',
+            'katberita'      => 'required|exists:kat_beritas,id',
+            'judul'          => 'required|string|max:255',
+            'isi'            => 'required|string',
+            'headline_news'  => 'required|in:Ya,Tidak',
+            'is_show'        => 'required|in:0,1',
+            'kat_regulasi'   => 'nullable|string',
+            'file_gambar'    => 'nullable|image|mimes:jpeg,jpg,png|max:5120', // max 5MB
+        ]);
 
-            if (!empty($cek)) {
-                
-                $ext    = request('file_gambar')->extension();
-                $katbrt = KatBerita::where('id', request('katberita'))->first();
-                // $mb     = filesize(request('file_gambar'));
-                // $tomb   = number_format($mb / 1048576,2);
+        // return request('kat_regulasi');
+        // Generate ID dan pastikan belum dipakai (opsional)
+        do {
+            $id = str_replace('-', '', Str::uuid());
+        } while (Berita::where('id', $id)->exists());
 
-                if ($ext == 'jpeg' || $ext == 'jpg' || $ext =='png') {
-                    
-                    $file       = $katbrt->namakbrt.'-'.date('dmY').
-                                    '-'.time().'.'.request('file_gambar')
-                                    ->getClientOriginalExtension();
-                    $upload     = request('file_gambar')
-                                    ->move(public_path('img/'), str_replace(' ', '', strtolower($file)));
+        $filename = null;
 
-                    $asup       = Berita::create([
-                                    'id'                => $id,
-                                    'katbahasa_id'      => request('katbahasa'),
-                                    'katberita_id'      => request('katberita'),
-                                    'judul'             => request('judul'),
-                                    'isi'               => request('isi'),
-                                    'kat_regulasi'      => empty(request('kat_regulasi')) ? null : request('kat_regulasi'),
-                                    'file_gambar'       => str_replace(' ', '', strtolower($file)),
-                                    'headline_news'     => request('headline_news'),
-                                    'is_show'           => request('is_show')
-                                ]);
+        if ($request->hasFile('file_gambar')) {
+            $file     = $request->file('file_gambar');
+            $ext      = $file->getClientOriginalExtension();
+            $katbrt   = KatBerita::findOrFail($request->katberita);
+            $basename = strtolower(str_replace(' ', '', $katbrt->namakbrt)) . '-' . date('dmY') . '-' . time();
+            $filename = $basename . '.' . $ext;
 
-                    if (request('is_show') == '1') {
-
-                        return redirect()->route('berita')->withasup('Successfully... Save To Database')->withsuccess('Berhasil... Simpan Data Ke Database');
-                    }else {
-
-                        return redirect()->route('brtunpublish')->withasup('Successfully... Save To Database')->withsuccess('Berhasil... Simpan Data Ke Database');
-                    }
-                    
-                }else {
-
-                    return back()->withsalah('Image Harus File .png, .jpg atau .jpeg')->witherror('Image Berita Bukan Berupa File .png, .jpg atau .jpeg');
-                }
-
-            }else {
-
-                $asup       = Berita::create([
-                                'id'                => $id,
-                                'katbahasa_id'      => request('katbahasa'),
-                                'katberita_id'      => request('katberita'),
-                                'judul'             => request('judul'),
-                                'isi'               => request('isi'),
-                                'kat_regulasi'      => empty(request('kat_regulasi')) ? null : request('kat_regulasi'),
-                                'headline_news'     => request('headline_news'),
-                                'is_show'           => request('is_show')
-                            ]);
-
-                if (request('is_show') == '1') {
-
-                    return redirect()->route('berita')->withasup('Successfully... Save To Database')->withsuccess('Berhasil... Simpan Data Ke Database');
-                }else {
-
-                    return redirect()->route('brtunpublish')->withasup('Successfully... Save To Database')->withsuccess('Berhasil... Simpan Data Ke Database');
-                }
-            }
-        }else {
-
-            return back()->withsalah('Data Gagal Di Simpan Ke Database Id Berita Sudah Digunakan')->witherror('Failled... Save To Database Id Already Used');
-
+            // Simpan gambar ke folder public/img menggunakan storeAs
+            $path = $file->storeAs('img', $filename, 'nfs_documents');
         }
-        
-        // return 'ok';
+
+        // Simpan data ke database
+        $berita = Berita::create([
+            'id'              => $id,
+            'katbahasa_id'    => $request->katbahasa,
+            'katberita_id'    => $request->katberita,
+            'judul'           => $request->judul,
+            'isi'             => $request->isi,
+            'kat_regulasi'    => $request->kat_regulasi ?: null,
+            'file_gambar'     => $filename,
+            'headline_news'   => $request->headline_news,
+            'is_show'         => $request->is_show,
+        ]);
+
+        $route = $request->is_show == '1' ? 'berita' : 'brtunpublish';
+
+        return redirect()->route($route)
+            ->with('asup', 'Successfully... Save To Database')
+            ->with('success', 'Berhasil... Simpan Data Ke Database');
     }
+
 
     /**
      * Display the specified resource.
@@ -160,10 +135,9 @@ class BeritaController extends Controller
 
         $katbrt     = KatBerita::orderby('namakbrt')->get();
         $katbhs     = KatBahasa::orderby('namakbhs')->get();
-        $regulid    = KatBerita::where('namakbrt','Regulasi')->first();
+        $regulid    = KatBerita::where('namakbrt', 'Regulasi')->first();
 
-        return view('admin.berita.eberita', compact('berita','katbrt','katbhs','regulid'));
-
+        return view('admin.berita.eberita', compact('berita', 'katbrt', 'katbhs', 'regulid'));
     }
 
     /**
@@ -173,88 +147,56 @@ class BeritaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Berita $berita)
+    public function update(Request $request, Berita $berita)
     {
+        $request->validate([
+            'katbahasa'     => 'required|exists:kat_bahasas,id',
+            'katberita'     => 'required|exists:kat_beritas,id',
+            'judul'         => 'required|string|max:255',
+            'isi'           => 'required|string',
+            'headline_news' => 'required|in:Ya,Tidak',
+            'is_show'       => 'required|in:0,1',
+            'kat_regulasi'  => 'nullable|string',
+            'file_gambar'   => 'nullable|image|mimes:jpeg,jpg,png|max:5120', // 5MB
+        ]);
 
-        $cek    = request('file_gambar');
+        $filename = $berita->file_gambar;
 
-        if (!empty($cek)) {
+        if ($request->hasFile('file_gambar')) {
+            $file     = $request->file('file_gambar');
+            $ext      = $file->getClientOriginalExtension();
+            $namakbrt = $berita->katberita->namakbrt ?? 'berita';
+            $filename = strtolower(str_replace(' ', '', $namakbrt)) . '-' . date('dmY') . '-' . time() . '.' . $ext;
 
-            $ext    = request('file_gambar')->extension();
-
-            if ($ext == 'jpeg' || $ext == 'jpg' || $ext =='png') {
-
-                    if (!empty($berita->file_gambar)) {
-                    
-                        $arr        = ['.jpeg','.jpg','.png','.JPG','.JPEG','.PNG'];
-                        $aran       = str_replace($arr, '', $berita->file_gambar);
-                        $file       = str_replace(' ', '', $aran.'.'.request('file_gambar')
-                                            ->getClientOriginalExtension());
-                        $old        = rename('img/'.$berita->file_gambar, 'img/'.$file.'-old');
-                        $upload     = request('file_gambar')->move(public_path('img/'), $file);
-
-                    }else {
-
-                        $file       = $berita->katberita->namakbrt.'-'.date('dmY').
-                                        '-'.time().'.'.request('file_gambar')
-                                        ->getClientOriginalExtension();
-                        $upload     = request('file_gambar')
-                                        ->move(public_path('img/'), str_replace(' ', '', strtolower($file)));
-                    }
-
-                    $berita->update([
-                                'katbahasa_id'      => request('katbahasa'),
-                                'katberita_id'      => request('katberita'),
-                                'judul'             => request('judul'),
-                                'isi'               => request('isi'),
-                                'kat_regulasi'      => empty(request('kat_regulasi')) ? null : request('kat_regulasi'),
-                                'file_gambar'       => empty($berita->file_gambar) ? 
-                                                        str_replace(' ', '', strtolower($file)) :
-                                                        $file,
-                                'headline_news'     => request('headline_news'),
-                                'is_show'           => request('is_show')
-                            ]);
-
-
-                if (request('is_show') == '1') {
-
-                    return redirect()->route('berita')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-                }else {
-
-                    return redirect()->route('brtunpublish')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-                }
-                
-            }else {
-
-                return back()->withsalah('Image Harus File .png, .jpg atau .jpeg')->witherror('Image Berita Bukan Berupa File .png, .jpg atau .jpeg');
-            }
-            
-        }else{
-
-            $berita->update([
-                        'katbahasa_id'      => request('katbahasa'),
-                        'katberita_id'      => request('katberita'),
-                        'judul'             => request('judul'),
-                        'isi'               => request('isi'),
-                        'kat_regulasi'      => empty(request('kat_regulasi')) ? null : request('kat_regulasi'),
-                        'headline_news'     => request('headline_news'),
-                        'is_show'           => request('is_show')
-                    ]);
-
-            if (request('is_show') == '1') {
-
-                return redirect()->route('berita')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-            }else {
-
-                return redirect()->route('brtunpublish')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
+            // Hapus file lama jika ada
+            $oldFile = 'img/' . $berita->file_gambar;
+            if ($berita->file_gambar && Storage::disk('nfs_documents')->exists($oldFile)) {
+                Storage::disk('nfs_documents')->delete($oldFile);
             }
 
+            // Simpan file baru
+            $file->storeAs('img', $filename, 'nfs_documents');
         }
 
-        // return request('kat_regulasi');
+        // Update ke database
+        $berita->update([
+            'katbahasa_id'   => $request->katbahasa,
+            'katberita_id'   => $request->katberita,
+            'judul'          => $request->judul,
+            'isi'            => $request->isi,
+            'kat_regulasi'   => $request->kat_regulasi ?: null,
+            'file_gambar'    => $filename,
+            'headline_news'  => $request->headline_news,
+            'is_show'        => $request->is_show,
+        ]);
 
-        
+        $route = $request->is_show == '1' ? 'berita' : 'brtunpublish';
+
+        return redirect()->route($route)
+            ->with('asup', 'Successfully... Update To Database')
+            ->with('success', 'Berhasil... Update Data Ke Database');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -264,34 +206,28 @@ class BeritaController extends Controller
      */
     public function destroy(Berita $berita)
     {
+        $disk = Storage::disk('nfs_documents');
 
-        if (empty($berita->file_gambar) || !file_exists('img/'.$berita->file_gambar) && !file_exists('img/'.$berita->file_gambar.'-old')) {
-             
-                $berita->delete();
+        // Siapkan path file gambar asli dan -old
+        $filePaths = [];
 
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
+        if (!empty($berita->file_gambar)) {
+            $filePaths[] = 'img/' . $berita->file_gambar;
+            $filePaths[] = 'img/' . $berita->file_gambar . '-old';
+        }
 
-            }elseif(file_exists('img/'.$berita->file_gambar) && file_exists('img/'.$berita->file_gambar.'-old')) {
-
-                $path       = public_path('img/');
-                $fileName   = $berita->file_gambar;
-                $fileName1  = $berita->file_gambar.'-old';
-                unlink($path. $fileName);
-                unlink($path. $fileName1);
-
-                $berita->delete();
-
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
-
-            }else {
-                
-                $path       = public_path('img/');
-                $fileName   = $berita->file_gambar;
-                unlink($path. $fileName);
-                $berita->delete();
-
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
-
+        // Hapus file jika ditemukan
+        foreach ($filePaths as $path) {
+            if ($disk->exists($path)) {
+                $disk->delete($path);
             }
+        }
+
+        // Hapus data dari database
+        $berita->delete();
+
+        return back()
+            ->with('hapus', 'Successfully... Delete From Database')
+            ->with('delete', 'Berhasil... Hapus Data Dari Database');
     }
 }

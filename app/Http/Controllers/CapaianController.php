@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\KatBahasa;
 use App\CapaianTahunan;
 
@@ -20,14 +21,35 @@ class CapaianController extends Controller
         $katbhs     = KatBahasa::orderby('namakbhs')->get();
         $capaian    = CapaianTahunan::latest()->get();
         $bulan      = [
-                        'January','February','March','April','May','June','July','August','September','October','November','December'
-                        ];
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
+        ];
         $ganti      = [
-                        'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'
-                        ];
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
+        ];
 
-        return view('admin.capaian.capaian', compact('no','capaian','bulan','ganti','katbhs'));
-
+        return view('admin.capaian.capaian', compact('no', 'capaian', 'bulan', 'ganti', 'katbhs'));
     }
 
     /**
@@ -48,54 +70,48 @@ class CapaianController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input dan file
+        $request->validate([
+            'katbahasa'  => 'required|exists:kat_bahasas,id',
+            'judul'      => 'required|string|max:255',
+            'tahun'      => 'required|date',
+            'nama_file'  => 'required|file|mimes:rar,zip,pdf,doc,docx,xlsx,xls,ppt,pptx|max:20480', // 20MB
+        ]);
 
-        $id     = str_replace('-', '', Str::uuid());
-        $cekid  = CapaianTahunan::where('id', $id)->get();
+        // Generate UUID dan pastikan unik (opsional)
+        do {
+            $id = str_replace('-', '', Str::uuid());
+        } while (CapaianTahunan::where('id', $id)->exists());
 
-        if (count($cekid) == 0) {
+        $file      = $request->file('nama_file');
+        $ext       = $file->getClientOriginalExtension();
 
-            $ext    = request('nama_file')->extension();
-            // $mb     = filesize(request('nama_file'));
-            // $tomb   = number_format($mb / 1048576,2);
-    		$bulan  = [
-                        'January','February','March','April','May','June','July','August','September','October','November','December'
-                        ];
-    	    $ganti  = [
-    	                'Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'
-    	                ];
+        // Konversi nama bulan ke dalam Bahasa Indonesia
+        $bulanInggris = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+        $bulanIndo    = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-            if ($ext == 'rar' || $ext == 'zip' || $ext =='pdf' || $ext == 'docx' || $ext == 'doc' || $ext =='xlsx' || $ext == 'xls' || $ext == 'pptx' || $ext == 'ppt') {
-                
-    	        
-                $file       = 'Capaian '.
-                				str_replace($bulan, $ganti, date('F Y', strtotime(request('tahun'))))
-                				.'-'.time().'.'.request('nama_file')->getClientOriginalExtension();
-                $upload     = request('nama_file')
-                                ->move(public_path('unduhan/'), $file);
+        $bulanTahun = str_replace($bulanInggris, $bulanIndo, date('F Y', strtotime($request->tahun)));
 
-                $asup       = CapaianTahunan::create([
-                                'id'                => $id,
-                                'katbahasa_id'      => request('katbahasa'),
-                                'judul'             => request('judul'),
-                                'tahun'             => date('Y-m-d', strtotime(request('tahun'))),
-                                'nama_file'       	=> $file
-                            ]);
+        // Format nama file
+        $filename = 'Capaian ' . $bulanTahun . '-' . time() . '.' . $ext;
 
-                return redirect()->route('capaian')->withasup('Successfully... Save To Database')->withsuccess('Berhasil... Simpan Data Ke Database');
-                
-                
-            }else {
+        // Simpan file ke disk nfs_documents dalam folder "unduhan"
+        $file->storeAs('unduhan', $filename, 'nfs_documents');
 
-                return back()->withsalah('File Bukan .rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt')->witherror('Bentuk File Extensi Harus .rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt');
-            }
+        // Simpan ke database
+        CapaianTahunan::create([
+            'id'            => $id,
+            'katbahasa_id'  => $request->katbahasa,
+            'judul'         => $request->judul,
+            'tahun'         => date('Y-m-d', strtotime($request->tahun)),
+            'nama_file'     => $filename,
+        ]);
 
-        }else {
-
-            return back()->withsalah('Data Gagal Di Simpan Ke Database Id Sudah Digunakan User lain')->witherror('Failled... Save To Database Id Already Used');
-
-        }
-
+        return redirect()->route('capaian')
+            ->with('asup', 'Successfully... Save To Database')
+            ->with('success', 'Berhasil... Simpan Data Ke Database');
     }
+
 
     /**
      * Display the specified resource.
@@ -119,8 +135,7 @@ class CapaianController extends Controller
 
         $katbhs     = KatBahasa::orderby('namakbhs')->get();
 
-        return view('admin.capaian.ecapaian', compact('cpt','katbhs'));
-
+        return view('admin.capaian.ecapaian', compact('cpt', 'katbhs'));
     }
 
     /**
@@ -130,53 +145,52 @@ class CapaianController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CapaianTahunan $cpt)
+    public function update(Request $request, CapaianTahunan $cpt)
     {
+        // Validasi input
+        $request->validate([
+            'katbahasa' => 'required|exists:kat_bahasas,id',
+            'judul'     => 'required|string|max:255',
+            'tahun'     => 'required|date',
+            'nama_file' => 'nullable|file|mimes:rar,zip,pdf,doc,docx,xlsx,xls,ppt,pptx|max:20480',
+        ]);
 
-        $cek    = request('nama_file');
+        $filename = $cpt->nama_file;
 
-        if (!empty($cek)) {
+        if ($request->hasFile('nama_file')) {
+            $file = $request->file('nama_file');
+            $ext  = $file->getClientOriginalExtension();
 
-            $ext    = request('nama_file')->extension();
+            // Format bulan Indonesia
+            $bulanInggris = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            $bulanIndo    = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            $bulanTahun   = str_replace($bulanInggris, $bulanIndo, date('F Y', strtotime($request->tahun)));
 
-            if ($ext == 'rar' || $ext == 'zip' || $ext =='pdf' || $ext == 'docx' || $ext == 'doc' || $ext =='xlsx' || $ext == 'xls' || $ext == 'pptx' || $ext == 'ppt') {
+            $filename = 'Capaian ' . $bulanTahun . '-' . time() . '.' . $ext;
 
-                    $arr        = ['.rar','.zip','.pdf','.docx',
-                    				'.doc','.xlsx','.xls','.pptx','.ppt'];
-                    $aran       = str_replace($arr, '', $cpt->nama_file);
-                    $file       = $aran.'.'.request('nama_file')->getClientOriginalExtension();
-                    $old        = rename('unduhan/'.$cpt->nama_file, 
-                    				'unduhan/'.$file.'-old');
-                    $upload     = request('nama_file')->move(public_path('unduhan/'), $file);
-
-                    $cpt->update([
-                            'katbahasa_id'      => request('katbahasa'),
-                            'judul'             => request('judul'),
-                            'tahun'             => date('Y-m-d', strtotime(request('tahun'))),
-                            'nama_file'       	=> $file
-                        ]);
-
-                    return redirect()->route('capaian')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-                
-                
-            }else {
-
-                return back()->withsalah('File Bukan .rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt')->witherror('Bentuk File Extensi Harus .rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt');
+            // Hapus file lama jika ada
+            $oldFile = 'unduhan/' . $cpt->nama_file;
+            if ($cpt->nama_file && Storage::disk('nfs_documents')->exists($oldFile)) {
+                Storage::disk('nfs_documents')->delete($oldFile);
             }
-            
-        }else{
 
-            $cpt->update([
-                                        
-                        'katbahasa_id'      => request('katbahasa'),
-                        'judul'             => request('judul'),
-                        'tahun'             => date('Y-m-d', strtotime(request('tahun')))
-                    ]);
-
-            return redirect()->route('capaian')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-            
+            // Simpan file baru
+            $file->storeAs('unduhan', $filename, 'nfs_documents');
         }
+
+        // Update data ke DB
+        $cpt->update([
+            'katbahasa_id' => $request->katbahasa,
+            'judul'        => $request->judul,
+            'tahun'        => date('Y-m-d', strtotime($request->tahun)),
+            'nama_file'    => $filename,
+        ]);
+
+        return redirect()->route('capaian')
+            ->with('asup', 'Successfully... Update To Database')
+            ->with('success', 'Berhasil... Update Data Ke Database');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -186,34 +200,28 @@ class CapaianController extends Controller
      */
     public function destroy(CapaianTahunan $cpt)
     {
+        $disk = Storage::disk('nfs_documents');
 
-        if (!file_exists('unduhan/'.$cpt->nama_file) && !file_exists('unduhan/'.$cpt->nama_file.'-old')) {
-             
-                $cpt->delete();
+        // Siapkan file paths yang mungkin ada
+        $filePaths = [];
 
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
+        if (!empty($cpt->nama_file)) {
+            $filePaths[] = 'unduhan/' . $cpt->nama_file;
+            $filePaths[] = 'unduhan/' . $cpt->nama_file . '-old';
+        }
 
-            }elseif(file_exists('unduhan/'.$cpt->nama_file) && file_exists('unduhan/'.$cpt->nama_file.'-old')) {
-
-                $path       = public_path('unduhan/');
-                $fileName   = $cpt->nama_file;
-                $fileName1  = $cpt->nama_file.'-old';
-                unlink($path. $fileName);
-                unlink($path. $fileName1);
-
-                $cpt->delete();
-
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
-
-            }else {
-                
-                $path       = public_path('unduhan/');
-                $fileName   = $cpt->nama_file;
-                unlink($path. $fileName);
-                $cpt->delete();
-
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
-
+        // Hapus file jika ditemukan
+        foreach ($filePaths as $path) {
+            if ($disk->exists($path)) {
+                $disk->delete($path);
             }
+        }
+
+        // Hapus record dari database
+        $cpt->delete();
+
+        return back()
+            ->with('hapus', 'Successfully... Delete From Database')
+            ->with('delete', 'Berhasil... Hapus Data Dari Database');
     }
 }

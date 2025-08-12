@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Jurnal;
 use App\KatBahasa;
 
 class JurnalController extends Controller
 {
-   
-	/**
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -21,8 +21,7 @@ class JurnalController extends Controller
         $no    = 1;
         $jurnal = Jurnal::latest()->get();
 
-        return view('admin.jurnal.jurnal', compact('no','jurnal'));
-
+        return view('admin.jurnal.jurnal', compact('no', 'jurnal'));
     }
 
     /**
@@ -45,64 +44,49 @@ class JurnalController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input
+        $validated = $request->validate([
+            'katbahasa_id' => 'required|exists:kat_bahasas,id',
+            'nama_penulis' => 'required|string|max:255',
+            'judul_jurnal' => 'required|string|max:255',
+            'kata_kunci'   => 'nullable|string|max:255',
+            'abstrak'      => 'nullable|string',
+            'publikasi'    => 'required|string',
+            'file_jurnal'  => 'required|file|mimes:pdf|max:25600', // 25MB = 25600 KB
+        ]);
 
-        $id     = str_replace('-', '', Str::uuid());
-        $cekid  = Jurnal::where('id', $id)->get();
+        // Generate UUID yang unik
+        do {
+            $id = Str::uuid()->toString();
+        } while (Jurnal::where('id', $id)->exists());
 
-        if (count($cekid) == 0) {
+        $filename = null;
 
-            $ext     = request('file_jurnal')->extension();
-            $sizemax = '26214400'; // 25 Mb
-            $size    = filesize(request('file_jurnal'));
+        if ($request->hasFile('file_jurnal')) {
+            $file     = $request->file('file_jurnal');
+            $judul    = Str::slug($request->judul_jurnal ?? 'jurnal');
+            $ext      = $file->getClientOriginalExtension();
+            $filename = 'File-jurnal-' . now()->format('dmY-His') . '.' . $ext;
 
-            if ($ext == 'pdf') {
-
-                if ($size <= $sizemax) {
-
-                    $file       = 'File-jurnal-'.date('dmY').
-                                    '-'.time().'.'.request('file_jurnal')
-                                    ->getClientOriginalExtension();
-                    $upload     = request('file_jurnal')
-                                    ->move(public_path('jurnal/'), strtolower($file));
-
-                    $asup   = Jurnal::create([
-                                'id'           => $id,
-                                'katbahasa_id' => request('katbahasa_id'),
-                                'nama_penulis' => request('nama_penulis'),
-                                'judul_jurnal' => request('judul_jurnal'),
-                                'kata_kunci'   => request('kata_kunci'),
-                                'abstrak'      => request('abstrak'),
-                                'publikasi'    => request('publikasi'),
-                                'file_jurnal'  => strtolower($file)
-                            ]);
-
-                    return redirect()
-                                ->route('jurnal')
-                                // ->withasup('Successfully... Save To Database')
-                                ->withsuccess('Berhasil... Simpan Data Ke Database');
-                    
-                }else {
-                
-                    return back()
-                            // ->withsalah('Failed... Input Data')
-                            ->witherror('File Terlalu Besar,  Max Upload File 25 Mb');
-                    
-                }
-                
-            }else {
-                
-                return back()
-                        // ->withsalah('Failed... Input Data')
-                        ->witherror('Extensi File jurnal Bukan .pdf  Mohon Upload File Yang Benar');
-            }
-
-        }else {
-
-            return back()
-                        // ->withsalah('Data Gagal Di Simpan Ke Database Id Sudah Digunakan')
-                        ->witherror('Failled... Save To Database Id Already Used');
+            // Simpan file ke disk (misalnya 'nfs_documents')
+            $file->storeAs('jurnal', strtolower($filename), 'nfs_documents');
         }
-        
+
+        // Simpan ke database
+        Jurnal::create([
+            'id'           => $id,
+            'katbahasa_id' => $request->katbahasa_id,
+            'nama_penulis' => $request->nama_penulis,
+            'judul_jurnal' => $request->judul_jurnal,
+            'kata_kunci'   => $request->kata_kunci,
+            'abstrak'      => $request->abstrak,
+            'publikasi'    => $request->publikasi,
+            'file_jurnal'  => strtolower($filename),
+        ]);
+
+        return redirect()
+            ->route('jurnal')
+            ->with('success', 'Berhasil... Simpan Data Ke Database');
     }
 
     /**
@@ -111,10 +95,7 @@ class JurnalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -127,8 +108,7 @@ class JurnalController extends Controller
 
         $katbhs = KatBahasa::orderby('namakbhs')->get();
 
-        return view('admin.jurnal.ejurnal', compact('jnl','katbhs'));
-
+        return view('admin.jurnal.ejurnal', compact('jnl', 'katbhs'));
     }
 
     /**
@@ -138,76 +118,51 @@ class JurnalController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Jurnal $jnl)
+    public function update(Request $request, Jurnal $jnl)
     {
-        
-        if (!empty(request('file_jurnal'))) {
+        // Validasi
+        $validated = $request->validate([
+            'katbahasa_id' => 'required|exists:kat_bahasas,id',
+            'nama_penulis' => 'required|string|max:255',
+            'judul_jurnal' => 'required|string|max:255',
+            'kata_kunci'   => 'nullable|string|max:255',
+            'abstrak'      => 'nullable|string',
+            'publikasi'    => 'required|string',
+            'file_jurnal'  => 'nullable|file|mimes:pdf|max:25600', // 25MB = 25600 KB
+        ]);
 
-            $ext     = request('file_jurnal')->extension();
-            $sizemax = '26214400'; // 25 Mb
-            $size    = filesize(request('file_jurnal'));
+        $filename = $jnl->file_jurnal;
 
-            if ($ext == 'pdf') {
+        if ($request->hasFile('file_jurnal')) {
+            $file    = $request->file('file_jurnal');
+            $judul   = Str::slug($request->judul_jurnal ?? 'jurnal');
+            $ext     = $file->getClientOriginalExtension();
+            $filename = 'File-jurnal-' . now()->format('dmY-His') . '.' . $ext;
 
-                if ($size <= $sizemax) {
-
-                    $arr    = ['.pdf'];
-                    $aran   = str_replace($arr, '', $jnl->file_jurnal);
-                    $file   = $aran.'.'.request('file_jurnal')
-                                    ->getClientOriginalExtension();
-                    $old    = rename('jurnal/'.$jnl->file_jurnal, 
-                                'jurnal/'.$file.'-old');
-                    $upload = request('file_jurnal')
-                                    ->move(public_path('jurnal/'), $file);
-
-                    $jnl->update([
-								'katbahasa_id' => request('katbahasa_id'),
-								'nama_penulis' => request('nama_penulis'),
-								'judul_jurnal' => request('judul_jurnal'),
-								'kata_kunci'   => request('kata_kunci'),
-								'abstrak'      => request('abstrak'),
-                                'publikasi'    => request('publikasi'),
-								'file_jurnal'  => $file
-                            ]);
-
-                    return redirect()
-                                ->route('jurnal')
-                                // ->withasup('Successfully... Update To Database')
-                                ->withsuccess('Berhasil... Update Database');
-                    
-                }else {
-                
-                    return back()
-                            // ->withsalah('Failed... Input Data')
-                            ->witherror('File Terlalu Besar,  Max Upload File 25 Mb');
-                    
-                }
-                
-            }else {
-                
-                return back()
-                        // ->withsalah('Failed... Input Data')
-                        ->witherror('Extensi File jurnal Bukan .pdf  Mohon Upload File Yang Benar');
+            // Hapus file lama jika ada
+            $oldPath = 'jurnal/' . $jnl->file_jurnal;
+            if ($jnl->file_jurnal && Storage::disk('nfs_documents')->exists($oldPath)) {
+                Storage::disk('nfs_documents')->delete($oldPath);
             }
-            
-        }else{
 
-            $jnl->update([
-                            'katbahasa_id' => request('katbahasa_id'),
-                            'nama_penulis' => request('nama_penulis'),
-                            'judul_jurnal' => request('judul_jurnal'),
-                            'kata_kunci'   => request('kata_kunci'),
-                            'publikasi'    => request('publikasi'),
-                            'abstrak'      => request('abstrak')
-                    ]);
-
-            return redirect()
-                        ->route('jurnal')
-                        // ->withasup('Successfully... Update To Database')
-                        ->withsuccess('Berhasil... Update Database');
-
+            // Simpan file baru
+            $file->storeAs('jurnal', strtolower($filename), 'nfs_documents');
         }
 
+        // Update ke database
+        $jnl->update([
+            'katbahasa_id' => $request->katbahasa_id,
+            'nama_penulis' => $request->nama_penulis,
+            'judul_jurnal' => $request->judul_jurnal,
+            'kata_kunci'   => $request->kata_kunci,
+            'abstrak'      => $request->abstrak,
+            'publikasi'    => $request->publikasi,
+            'file_jurnal'  => strtolower($filename),
+        ]);
+
+        return redirect()
+            ->route('jurnal')
+            ->with('success', 'Berhasil... Update Database');
     }
 
     /**
@@ -219,23 +174,26 @@ class JurnalController extends Controller
     public function destroy(Jurnal $jnl)
     {
 
-        $arr     = ['.pdf','.PDF'];
-        $cfile   = str_replace($arr, '', $jnl->file_jurnal); 
-        $file1   = public_path('jurnal/'.$jnl->file_jurnal);
+        $disk = Storage::disk('nfs_documents');
 
-        foreach ($arr as $k) {
+        // Siapkan file paths yang mungkin ada
+        $filePaths = [];
 
-            $file2   = public_path('jurnal/'.$cfile.$k.'-old');
-            $delfile = File::delete($file1,$file2);
-
+        if (!empty($cpt->gambar)) {
+            $filePaths[] = 'jurnal/' . $jnl->file_jurnal;
+            $filePaths[] = 'jurnal/' . $jnl->file_jurnal . '-old';
         }
 
+        // Hapus file jika ditemukan
+        foreach ($filePaths as $path) {
+            if ($disk->exists($path)) {
+                $disk->delete($path);
+            }
+        }
 
-            $jnl->delete();
+        // Hapus record dari database
+        $jnl->delete();
 
-            return back()
-                    // ->withhapus('Successfully... Delete From Database')
-                    ->withdelete('Berhasil... Hapus Data Dari Database');
+        return back()->with('delete', 'Berhasil... Hapus Data Dari Database');
     }
-
 }

@@ -10,19 +10,18 @@ use App\KatBahasa;
 
 class SurveyController extends Controller
 {
-	
-	/**
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-		$no     = 1;
-		$survey = Survey::latest()->get();
+        $no     = 1;
+        $survey = Survey::latest()->get();
 
-        return view('admin.survey.survey', compact('no','survey'));
-
+        return view('admin.survey.survey', compact('no', 'survey'));
     }
 
     /**
@@ -52,30 +51,28 @@ class SurveyController extends Controller
         if (count($cekid) == 0) {
 
             $asup   = Survey::create([
-						'id'                => $id,
-						'katbahasa_id'      => request('katbahasa_id'),
-						'judul'             => request('judul'),
-						'tujuan'            => request('tujuan'),
-						'metode'            => request('metode'),
-						'responden'         => request('responden'),
-						'waktu_pelaksanaan' => date('Y-m-d',strtotime(request('waktu_pelaksanaan'))),
-						'tgl_tutup'         => date('Y-m-d',strtotime(request('tgl_tutup'))),
-						'link'              => request('link'),
-						'publikasi'         => request('publikasi')
-                    ]);
+                'id'                => $id,
+                'katbahasa_id'      => request('katbahasa_id'),
+                'judul'             => request('judul'),
+                'tujuan'            => request('tujuan'),
+                'metode'            => request('metode'),
+                'responden'         => request('responden'),
+                'waktu_pelaksanaan' => date('Y-m-d', strtotime(request('waktu_pelaksanaan'))),
+                'tgl_tutup'         => date('Y-m-d', strtotime(request('tgl_tutup'))),
+                'link'              => request('link'),
+                'publikasi'         => request('publikasi')
+            ]);
 
             return redirect()
-                        ->route('survey')
-                        // ->withasup('Successfully... Save To Database')
-                        ->withsuccess('Berhasil... Simpan Data Ke Database');
-                    
-        }else {
+                ->route('survey')
+                // ->withasup('Successfully... Save To Database')
+                ->withsuccess('Berhasil... Simpan Data Ke Database');
+        } else {
 
             return back()
-                        // ->withsalah('Data Gagal Di Simpan Ke Database Id Sudah Digunakan')
-                        ->witherror('Failled... Save To Database Id Already Used');
+                // ->withsalah('Data Gagal Di Simpan Ke Database Id Sudah Digunakan')
+                ->witherror('Failled... Save To Database Id Already Used');
         }
-        
     }
 
     /**
@@ -84,10 +81,7 @@ class SurveyController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-
-    }
+    public function show($id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -100,8 +94,7 @@ class SurveyController extends Controller
 
         $katbhs = KatBahasa::orderby('namakbhs')->get();
 
-        return view('admin.survey.esurvey', compact('srv','katbhs'));
-
+        return view('admin.survey.esurvey', compact('srv', 'katbhs'));
     }
 
     /**
@@ -113,26 +106,24 @@ class SurveyController extends Controller
      */
     public function update(Survey $srv)
     {
-        
-
-	    $srv->update([
-					'katbahasa_id'      => request('katbahasa_id'),
-					'judul'             => request('judul'),
-					'tujuan'            => request('tujuan'),
-					'metode'            => request('metode'),
-					'responden'         => request('responden'),
-					'waktu_pelaksanaan' => date('Y-m-d',strtotime(request('waktu_pelaksanaan'))),
-					'tgl_tutup'         => date('Y-m-d',strtotime(request('tgl_tutup'))),
-					'link'              => request('link'),
-					'publikasi'         => request('publikasi')
-	            ]);
-
-	    return redirect()
-	                ->route('survey')
-	                // ->withasup('Successfully... Update To Database')
-	                ->withsuccess('Berhasil... Update Database');
 
 
+        $srv->update([
+            'katbahasa_id'      => request('katbahasa_id'),
+            'judul'             => request('judul'),
+            'tujuan'            => request('tujuan'),
+            'metode'            => request('metode'),
+            'responden'         => request('responden'),
+            'waktu_pelaksanaan' => date('Y-m-d', strtotime(request('waktu_pelaksanaan'))),
+            'tgl_tutup'         => date('Y-m-d', strtotime(request('tgl_tutup'))),
+            'link'              => request('link'),
+            'publikasi'         => request('publikasi')
+        ]);
+
+        return redirect()
+            ->route('survey')
+            // ->withasup('Successfully... Update To Database')
+            ->withsuccess('Berhasil... Update Database');
     }
 
     /**
@@ -147,8 +138,7 @@ class SurveyController extends Controller
         $srv->delete();
 
         return back()
-                // ->withhapus('Successfully... Delete From Database')
-                ->withdelete('Berhasil... Hapus Data Dari Database');
-
+            // ->withhapus('Successfully... Delete From Database')
+            ->withdelete('Berhasil... Hapus Data Dari Database');
     }
 }

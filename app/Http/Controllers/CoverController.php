@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 use App\KatBahasa;
 use App\CoverPhoto;
 use App\AlbumPhoto;
@@ -18,10 +19,9 @@ class CoverController extends Controller
     public function index()
     {
         $no         = 1;
-        $cover  	= CoverPhoto::latest()->get();
+        $cover      = CoverPhoto::latest()->get();
 
-        return view('admin.cover.cover', compact('no','cover'));
-
+        return view('admin.cover.cover', compact('no', 'cover'));
     }
 
     /**
@@ -35,7 +35,6 @@ class CoverController extends Controller
         $katbhs     = KatBahasa::orderby('namakbhs')->get();
 
         return view('admin.cover.tcover', compact('katbhs'));
-
     }
 
     /**
@@ -46,49 +45,42 @@ class CoverController extends Controller
      */
     public function store(Request $request)
     {
+        // Validasi input dan file
+        $request->validate([
+            'katbahasa'      => 'required|exists:kat_bahasas,id',
+            'nama_cover_id'  => 'required|string|max:255',
+            'nama_cover_en'  => 'required|string|max:255',
+            'deskripsi'      => 'nullable|string',
+            'nfile'          => 'required|image|mimes:jpg,jpeg,png|max:5120', // max 5MB
+        ]);
 
-        $id     = str_replace('-', '', Str::uuid());
-        $cekid  = CoverPhoto::where('id', $id)->get();
+        // Generate ID unik
+        do {
+            $id = str_replace('-', '', Str::uuid());
+        } while (CoverPhoto::where('id', $id)->exists());
 
-        if (count($cekid) == 0) {
+        $file     = $request->file('nfile');
+        $ext      = $file->getClientOriginalExtension();
+        $filename = 'cover-' . time() . '.' . $ext;
 
-            $ext    = request('nfile')->extension();
-            // $mb     = filesize(request('nfile'));
-            // $tomb   = number_format($mb / 1048576,2);
+        // Simpan ke disk nfs_documents (folder "cover")
+        $file->storeAs('cover', $filename, 'nfs_documents');
 
-            if ($ext == 'jpg' || $ext == 'jpeg' || $ext =='png') {
-                
-    	        
-                $file       = 'cover'.'-'.time().'.'
-                				.request('nfile')->getClientOriginalExtension();
-                $upload     = request('nfile')
-                                ->move(public_path('cover/'), $file);
+        // Simpan data ke DB
+        CoverPhoto::create([
+            'id'             => $id,
+            'katbahasa_id'   => $request->katbahasa,
+            'nama_cover_id'  => $request->nama_cover_id,
+            'nama_cover_en'  => $request->nama_cover_en,
+            'deskripsi'      => $request->deskripsi,
+            'nfile'          => $filename,
+        ]);
 
-                $asup       = CoverPhoto::create([
-                                'id'                => $id,
-                                'katbahasa_id'      => request('katbahasa'),
-                                'nama_cover_id'     => request('nama_cover_id'),
-                                'nama_cover_en'     => request('nama_cover_en'),
-                                'deskripsi'         => request('deskripsi'),
-                                'nfile'       		=> $file
-                            ]);
-
-                return redirect()->route('cover')->withasup('Successfully... Save To Database')->withsuccess('Berhasil... Simpan Data Ke Database');
-                
-                
-            }else {
-
-                return back()->withsalah('File Bukan .jpg, .jpeg, .png')->witherror('Bentuk File Extensi Harus .jpg, .jpeg, .png');
-            }
-
-        }else {
-
-            return back()->withsalah('Data Gagal Di Simpan Ke Database Id Sudah Digunakan User lain')->witherror('Failled... Save To Database Id Already Used');
-
-        }
-        
-
+        return redirect()->route('cover')
+            ->with('asup', 'Successfully... Save To Database')
+            ->with('success', 'Berhasil... Simpan Data Ke Database');
     }
+
 
     /**
      * Display the specified resource.
@@ -112,8 +104,7 @@ class CoverController extends Controller
 
         $katbhs     = KatBahasa::orderby('namakbhs')->get();
 
-        return view('admin.cover.ecover', compact('cvr','katbhs'));
-
+        return view('admin.cover.ecover', compact('cvr', 'katbhs'));
     }
 
     /**
@@ -123,52 +114,49 @@ class CoverController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CoverPhoto $cvr)
+    public function update(Request $request, CoverPhoto $cvr)
     {
+        // Validasi input dan file opsional
+        $request->validate([
+            'katbahasa'     => 'required|exists:kat_bahasas,id',
+            'nama_cover_id' => 'required|string|max:255',
+            'nama_cover_en' => 'required|string|max:255',
+            'deskripsi'     => 'nullable|string',
+            'nfile'         => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+        ]);
 
-        $cek    = request('nfile');
+        $filename = $cvr->nfile;
 
-        if (!empty($cek)) {
+        if ($request->hasFile('nfile')) {
+            $file = $request->file('nfile');
+            $ext  = $file->getClientOriginalExtension();
 
-            $ext    = request('nfile')->extension();
+            // Format nama file baru
+            $filename = 'cover-' . time() . '.' . $ext;
 
-            if ($ext == 'jpg' || $ext == 'jpeg' || $ext =='png') {
-
-                    $arr        = ['.jpeg','.jpg','.png'];
-                    $aran       = str_replace($arr, '', $cvr->nfile);
-                    $file       = $aran.'.'.request('nfile')->getClientOriginalExtension();
-                    $old        = rename('cover/'.$cvr->nfile, 
-                    				'cover/'.$file.'-old');
-                    $upload     = request('nfile')->move(public_path('cover/'), $file);
-
-                    $cvr->update([
-                            'katbahasa_id'      => request('katbahasa'),
-                            'nama_cover_id'     => request('nama_cover_id'),
-                            'nama_cover_en'     => request('nama_cover_en'),
-                            'deskripsi'         => request('deskripsi'),
-                            'nfile'       		=> $file
-                        ]);
-
-                    return redirect()->route('cover')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-                
-                
-            }else {
-
-                return back()->withsalah('File Bukan .jpg, .jpeg, .png')->witherror('Bentuk File Extensi Harus .jpg, .jpeg, .png');
+            // Hapus file lama jika ada
+            $disk = Storage::disk('nfs_documents');
+            $oldFile = 'cover/' . $cvr->nfile;
+            if ($cvr->nfile && $disk->exists($oldFile)) {
+                $disk->delete($oldFile);
             }
-            
-        }else{
 
-            $cvr->update([
-                            'katbahasa_id'      => request('katbahasa'),
-                            'nama_cover_id'     => request('nama_cover_id'),
-                            'nama_cover_en'     => request('nama_cover_en'),
-                            'deskripsi'         => request('deskripsi')
-                    ]);
-
-            return redirect()->route('cover')->withasup('Successfully... Update To Database')->withsuccess('Berhasil... Update Data Ke Database');
-            
+            // Simpan file baru
+            $file->storeAs('cover', $filename, 'nfs_documents');
         }
+
+        // Update data ke database
+        $cvr->update([
+            'katbahasa_id'   => $request->katbahasa,
+            'nama_cover_id'  => $request->nama_cover_id,
+            'nama_cover_en'  => $request->nama_cover_en,
+            'deskripsi'      => $request->deskripsi,
+            'nfile'          => $filename,
+        ]);
+
+        return redirect()->route('cover')
+            ->with('asup', 'Successfully... Update To Database')
+            ->with('success', 'Berhasil... Update Data Ke Database');
     }
 
     /**
@@ -179,72 +167,44 @@ class CoverController extends Controller
      */
     public function destroy(CoverPhoto $cvr)
     {
+        $disk = Storage::disk('nfs_documents');
 
-        if (!file_exists('cover/'.$cvr->nfile) && !file_exists('cover/'.$cvr->nfile.'-old')) {
-             
+        // Hapus file cover (utama dan -old)
+        $coverFiles = [
+            'cover/' . $cvr->nfile,
+            'cover/' . $cvr->nfile . '-old',
+        ];
 
-                $photo      = AlbumPhoto::where('cover_id', $cvr->id)->get();
-                $pathphoto  = public_path('album/gallery/');
-                foreach ($photo as $v) {
-                     
-                     if (file_exists('album/gallery/'.$v->nama_file) && file_exists('album/gallery/'.$v->nama_file.'-old')) {
-                         unlink($pathphoto.$v->nama_file);
-                         unlink($pathphoto.$v->nama_file.'-old');
-                     }elseif(file_exists('album/gallery/'.$v->nama_file)) {
-                         unlink($pathphoto.$v->nama_file);
-                     }
-                 } 
-
-                 $cvr->delete();
-
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
-
-            }elseif(file_exists('cover/'.$cvr->nfile) && file_exists('cover/'.$cvr->nfile.'-old')) {
-
-                $photo      = AlbumPhoto::where('cover_id', $cvr->id)->get();
-                $pathphoto  = public_path('album/gallery/');
-                foreach ($photo as $v) {
-                     
-                     if (file_exists('album/gallery/'.$v->nama_file) && file_exists('album/gallery/'.$v->nama_file.'-old')) {
-                         unlink($pathphoto.$v->nama_file);
-                         unlink($pathphoto.$v->nama_file.'-old');
-                     }elseif(file_exists('album/gallery/'.$v->nama_file)) {
-                         unlink($pathphoto.$v->nama_file);
-                     }
-                 } 
-
-                $path       = public_path('cover/');
-                $fileName   = $cvr->nfile;
-                $fileName1  = $cvr->nfile.'-old';
-                unlink($path. $fileName);
-                unlink($path. $fileName1);
-
-                $cvr->delete();
-
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
-
-            }else {
-
-                $photo      = AlbumPhoto::where('cover_id', $cvr->id)->get();
-                $pathphoto  = public_path('album/gallery/');
-                foreach ($photo as $v) {
-                     
-                     if (file_exists('album/gallery/'.$v->nama_file) && file_exists('album/gallery/'.$v->nama_file.'-old')) {
-                         unlink($pathphoto.$v->nama_file);
-                         unlink($pathphoto.$v->nama_file.'-old');
-                     }elseif(file_exists('album/gallery/'.$v->nama_file)) {
-                         unlink($pathphoto.$v->nama_file);
-                     }
-                 } 
-                
-                $path       = public_path('cover/');
-                $fileName   = $cvr->nfile;
-                unlink($path. $fileName);
-                $cvr->delete();
-
-                return back()->withhapus('Successfully... Delete From Database')->withdelete('Berhasil... Hapus Data Dari Database');
-
+        foreach ($coverFiles as $coverFile) {
+            if ($disk->exists($coverFile)) {
+                $disk->delete($coverFile);
             }
-        
+        }
+
+        // Hapus semua album photo terkait
+        $photos = AlbumPhoto::where('cover_id', $cvr->id)->get();
+
+        foreach ($photos as $photo) {
+            $photoFiles = [
+                'album/gallery/' . $photo->nama_file,
+                'album/gallery/' . $photo->nama_file . '-old',
+            ];
+
+            foreach ($photoFiles as $path) {
+                if ($disk->exists($path)) {
+                    $disk->delete($path);
+                }
+            }
+
+            // Hapus record dari tabel album_photo
+            $photo->delete();
+        }
+
+        // Hapus data cover
+        $cvr->delete();
+
+        return back()
+            ->with('hapus', 'Successfully... Delete From Database')
+            ->with('delete', 'Berhasil... Hapus Data Dari Database');
     }
 }

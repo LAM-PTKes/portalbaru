@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use App\Renstra;
 use App\KatBahasa;
@@ -22,8 +23,7 @@ class RenstraController extends Controller
         $renstra = Renstra::latest()->get();
         $katbhs  = KatBahasa::orderby('namakbhs')->get();
 
-        return view('admin.renstra.renstra', compact('no','renstra','katbhs'));
-
+        return view('admin.renstra.renstra', compact('no', 'renstra', 'katbhs'));
     }
 
     /**
@@ -41,64 +41,41 @@ class RenstraController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+     */ public function store(Request $request)
     {
+        // Validasi input
+        $request->validate([
+            'katbahasa_id' => 'required|integer',
+            'judul'        => 'required|string|max:255',
+            'deskripsi'    => 'nullable|string',
+            'publikasi'    => 'required|date',
+            'nfile'        => 'required|file|mimes:pdf|max:25600', // 25MB
+        ]);
 
-        $id     = str_replace('-', '', Str::uuid());
-        $cekid  = Renstra::where('id', $id)->get();
-
-        if (count($cekid) == 0) {
-
-            $ext     = request('nfile')->extension();
-            $sizemax = '26214400'; // 25 Mb
-            $size    = filesize(request('nfile'));
-
-            if ($ext == 'pdf') {
-
-                if ($size <= $sizemax) {
-
-                    $file       = 'File-renstra-'.date('dmY').
-                                    '-'.time().'.'.request('nfile')
-                                    ->getClientOriginalExtension();
-                    $upload     = request('nfile')
-                                    ->move(public_path('renstra/'), strtolower($file));
-
-                    $asup   = Renstra::create([
-                                'id'           => $id,
-                                'katbahasa_id' => request('katbahasa_id'),
-                                'judul'        => request('judul'),
-                                'deskripsi'    => request('deskripsi'),
-                                'publikasi'    => request('publikasi'),
-                                'nfile'        => strtolower($file)
-                            ]);
-
-                    return redirect()
-                                ->route('renstra')
-                                // ->withasup('Successfully... Save To Database')
-                                ->withsuccess('Berhasil... Simpan Data Ke Database');
-                    
-                }else {
-                
-                    return back()
-                            // ->withsalah('Failed... Input Data')
-                            ->witherror('File Terlalu Besar,  Max Upload File 25 Mb');
-                    
-                }
-                
-            }else {
-                
-                return back()
-                        // ->withsalah('Failed... Input Data')
-                        ->witherror('Extensi File Renstra Bukan .pdf  Mohon Upload File Yang Benar');
-            }
-
-        }else {
-
-            return back()
-                        // ->withsalah('Data Gagal Di Simpan Ke Database Id Sudah Digunakan')
-                        ->witherror('Failled... Save To Database Id Already Used');
+        // Buat UUID dan pastikan unik
+        $id = str_replace('-', '', Str::uuid());
+        if (Renstra::where('id', $id)->exists()) {
+            return back()->witherror('Gagal... ID sudah digunakan.');
         }
+
+        // Simpan file
+        $file     = $request->file('nfile');
+        $filename = 'File-renstra-' . date('dmY') . '-' . time() . '.' . $file->getClientOriginalExtension();
+        $path     = $file->storeAs('renstra', strtolower($filename), 'nfs_documents');
+
+        // Simpan ke database
+        Renstra::create([
+            'id'           => $id,
+            'katbahasa_id' => $request->katbahasa_id,
+            'judul'        => $request->judul,
+            'deskripsi'    => $request->deskripsi,
+            'publikasi'    => $request->publikasi,
+            'nfile'        => strtolower($filename)
+        ]);
+
+        return redirect()
+            ->route('renstra')
+            ->withSuccess('Berhasil... Data tersimpan.');
     }
 
     /**
@@ -118,75 +95,60 @@ class RenstraController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit()
+    public function edit(Request $request)
     {
-            
-        $jnl     = Renstra::where('id', request('id'))->first();
-        
-        if (!empty(request('nfile'))) {
+        $jnl = Renstra::findOrFail($request->id);
 
-            $ext     = request('nfile')->extension();
-            $sizemax = '26214400'; // 25 Mb
-            $size    = filesize(request('nfile'));
+        // Validasi input
+        $rules = [
+            'katbahasa_id' => 'required|integer',
+            'judul'        => 'required|string|max:255',
+            'deskripsi'    => 'nullable|string',
+            'publikasi'    => 'required|date',
+        ];
 
-
-            if ($ext == 'pdf') {
-
-                if ($size <= $sizemax) {
-
-                    $arr    = ['.pdf'];
-                    $aran   = str_replace($arr, '', $jnl->nfile);
-                    $file   = $aran.'.'.request('nfile')
-                                    ->getClientOriginalExtension();
-                    $old    = rename('renstra/'.$jnl->nfile, 
-                                'renstra/'.$file.'-old');
-                    $upload = request('nfile')
-                                    ->move(public_path('renstra/'), $file);
-
-                    $jnl->update([
-                                'katbahasa_id' => request('katbahasa_id'),
-                                'judul'        => request('judul'),
-                                'deskripsi'    => request('deskripsi'),
-                                'publikasi'    => request('publikasi'),
-                                'nfile'        => strtolower($file)
-                            ]);
-
-                    return redirect()
-                                ->route('renstra')
-                                // ->withasup('Successfully... Update To Database')
-                                ->withsuccess('Berhasil... Update Database');
-                    
-                }else {
-                
-                    return back()
-                            // ->withsalah('Failed... Input Data')
-                            ->witherror('File Terlalu Besar,  Max Upload File 25 Mb');
-                    
-                }
-                
-            }else {
-                
-                return back()
-                        // ->withsalah('Failed... Input Data')
-                        ->witherror('Extensi File Renstra Bukan .pdf  Mohon Upload File Yang Benar');
-            }
-            
-        }else{
-
-            $jnl->update([
-                                'katbahasa_id' => request('katbahasa_id'),
-                                'judul'        => request('judul'),
-                                'deskripsi'    => request('deskripsi'),
-                                'publikasi'    => request('publikasi')
-                    ]);
-
-            return redirect()
-                        ->route('renstra')
-                        // ->withasup('Successfully... Update To Database')
-                        ->withsuccess('Berhasil... Update Database');
-
+        // Kalau ada file baru, tambahkan validasi file
+        if ($request->hasFile('nfile')) {
+            $rules['nfile'] = 'file|mimes:pdf|max:25600'; // 25 MB
         }
+
+        $request->validate($rules);
+
+        // Kalau ada file baru → hapus file lama, lalu upload yang baru
+        if ($request->hasFile('nfile')) {
+            // Hapus file lama
+            if ($jnl->nfile && Storage::disk('nfs_documents')->exists('renstra/' . $jnl->nfile)) {
+                Storage::disk('nfs_documents')->delete('renstra/' . $jnl->nfile);
+            }
+
+            // Upload file baru
+            $file     = $request->file('nfile');
+            $filename = 'File-renstra-' . date('dmY') . '-' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('renstra', strtolower($filename), 'nfs_documents');
+
+            // Update data dengan file baru
+            $jnl->update([
+                'katbahasa_id' => $request->katbahasa_id,
+                'judul'        => $request->judul,
+                'deskripsi'    => $request->deskripsi,
+                'publikasi'    => $request->publikasi,
+                'nfile'        => strtolower($filename)
+            ]);
+        } else {
+            // Update data tanpa ganti file
+            $jnl->update([
+                'katbahasa_id' => $request->katbahasa_id,
+                'judul'        => $request->judul,
+                'deskripsi'    => $request->deskripsi,
+                'publikasi'    => $request->publikasi
+            ]);
+        }
+
+        return redirect()
+            ->route('renstra')
+            ->withsuccess('Berhasil... Data berhasil diperbarui.');
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -208,24 +170,14 @@ class RenstraController extends Controller
      */
     public function destroy(Renstra $rnt)
     {
-
-        $arr     = ['.pdf','.PDF'];
-        $cfile   = str_replace($arr, '', $rnt->nfile); 
-        $file1   = public_path('renstra/'.$rnt->nfile);
-
-        foreach ($arr as $k) {
-
-            $file2   = public_path('renstra/'.$cfile.$k.'-old');
-            $delfile = File::delete($file1,$file2);
-
+        // Hapus file dari storage jika ada
+        if ($rnt->nfile && Storage::disk('nfs_documents')->exists('renstra/' . $rnt->nfile)) {
+            Storage::disk('nfs_documents')->delete('renstra/' . $rnt->nfile);
         }
 
+        // Hapus data dari database
+        $rnt->delete();
 
-            $rnt->delete();
-
-            return back()
-                    // ->withhapus('Successfully... Delete From Database')
-                    ->withdelete('Berhasil... Hapus Data Dari Database');
+        return back()->withDelete('Berhasil... Hapus Data Dari Database');
     }
-    
 }
