@@ -2,19 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Faq;
+use App\Agenda;
+use App\Berita;
 use App\Footer;
 use App\Kontak;
-use App\Agenda;
 use App\Profil;
-use App\Berita;
 use App\Unduhan;
-use App\KatUnduhan;
-use App\Faq;
 use App\KatBahasa;
 use App\KatBerita;
+use App\KatUnduhan;
 use App\Organisasi;
 use App\CapaianTahunan;
+use App\KategoriProfile;
+use App\ProfilePimpinan;
+use Illuminate\Http\Request;
 
 class AwalController extends Controller
 {
@@ -383,14 +385,20 @@ class AwalController extends Controller
             ->get();
 
         $rg     =   [
-            'Undang-Undang', 'Peraturan Presiden',
-            'Peraturan Pemerintah', 'Peraturan Menteri',
-            'Peraturan BAN-PT', 'Peraturan LAM-PTKes'
+            'Undang-Undang',
+            'Peraturan Presiden',
+            'Peraturan Pemerintah',
+            'Peraturan Menteri',
+            'Peraturan BAN-PT',
+            'Peraturan LAM-PTKes'
         ];
         $grg    =   [
-            'Constitution', 'Presidential decree',
-            'Government Regulations', 'Ministerial Regulations',
-            'NAAHE Regulations', 'IAAHEH Regulations'
+            'Constitution',
+            'Presidential decree',
+            'Government Regulations',
+            'Ministerial Regulations',
+            'NAAHE Regulations',
+            'IAAHEH Regulations'
         ];
 
         return view(
@@ -436,14 +444,20 @@ class AwalController extends Controller
             ->get();
 
         $rg     =   [
-            'Undang-Undang', 'Peraturan Presiden',
-            'Peraturan Pemerintah', 'Peraturan Menteri',
-            'Peraturan BAN-PT', 'Peraturan LAM-PTKes'
+            'Undang-Undang',
+            'Peraturan Presiden',
+            'Peraturan Pemerintah',
+            'Peraturan Menteri',
+            'Peraturan BAN-PT',
+            'Peraturan LAM-PTKes'
         ];
         $grg    =   [
-            'Constitution', 'Presidential decree',
-            'Government Regulations', 'Ministerial Regulations',
-            'NAAHE Regulations', 'IAAHEH Regulations'
+            'Constitution',
+            'Presidential decree',
+            'Government Regulations',
+            'Ministerial Regulations',
+            'NAAHE Regulations',
+            'IAAHEH Regulations'
         ];
 
         return view(
@@ -489,14 +503,20 @@ class AwalController extends Controller
             ->get();
 
         $rg     =   [
-            'Undang-Undang', 'Peraturan Presiden',
-            'Peraturan Pemerintah', 'Peraturan Menteri',
-            'Peraturan BAN-PT', 'Peraturan LAM-PTKes'
+            'Undang-Undang',
+            'Peraturan Presiden',
+            'Peraturan Pemerintah',
+            'Peraturan Menteri',
+            'Peraturan BAN-PT',
+            'Peraturan LAM-PTKes'
         ];
         $grg    =   [
-            'Constitution', 'Presidential decree',
-            'Government Regulations', 'Ministerial Regulations',
-            'NAAHE Regulations', 'IAAHEH Regulations'
+            'Constitution',
+            'Presidential decree',
+            'Government Regulations',
+            'Ministerial Regulations',
+            'NAAHE Regulations',
+            'IAAHEH Regulations'
         ];
 
         return view(
@@ -542,14 +562,20 @@ class AwalController extends Controller
             ->get();
 
         $rg     =   [
-            'Undang-Undang', 'Peraturan Presiden',
-            'Peraturan Pemerintah', 'Peraturan Menteri',
-            'Peraturan BAN-PT', 'Peraturan LAM-PTKes'
+            'Undang-Undang',
+            'Peraturan Presiden',
+            'Peraturan Pemerintah',
+            'Peraturan Menteri',
+            'Peraturan BAN-PT',
+            'Peraturan LAM-PTKes'
         ];
         $grg    =   [
-            'Constitution', 'Presidential decree',
-            'Government Regulations', 'Ministerial Regulations',
-            'NAAHE Regulations', 'IAAHEH Regulations'
+            'Constitution',
+            'Presidential decree',
+            'Government Regulations',
+            'Ministerial Regulations',
+            'NAAHE Regulations',
+            'IAAHEH Regulations'
         ];
 
         return view(
@@ -595,14 +621,20 @@ class AwalController extends Controller
             ->get();
 
         $rg     =   [
-            'Undang-Undang', 'Peraturan Presiden',
-            'Peraturan Pemerintah', 'Peraturan Menteri',
-            'Peraturan BAN-PT', 'Peraturan LAM-PTKes'
+            'Undang-Undang',
+            'Peraturan Presiden',
+            'Peraturan Pemerintah',
+            'Peraturan Menteri',
+            'Peraturan BAN-PT',
+            'Peraturan LAM-PTKes'
         ];
         $grg    =   [
-            'Constitution', 'Presidential decree',
-            'Government Regulations', 'Ministerial Regulations',
-            'NAAHE Regulations', 'IAAHEH Regulations'
+            'Constitution',
+            'Presidential decree',
+            'Government Regulations',
+            'Ministerial Regulations',
+            'NAAHE Regulations',
+            'IAAHEH Regulations'
         ];
 
         return view(
@@ -648,14 +680,20 @@ class AwalController extends Controller
             ->get();
 
         $rg     =   [
-            'Undang-Undang', 'Peraturan Presiden',
-            'Peraturan Pemerintah', 'Peraturan Menteri',
-            'Peraturan BAN-PT', 'Peraturan LAM-PTKes'
+            'Undang-Undang',
+            'Peraturan Presiden',
+            'Peraturan Pemerintah',
+            'Peraturan Menteri',
+            'Peraturan BAN-PT',
+            'Peraturan LAM-PTKes'
         ];
         $grg    =   [
-            'Constitution', 'Presidential decree',
-            'Government Regulations', 'Ministerial Regulations',
-            'NAAHE Regulations', 'IAAHEH Regulations'
+            'Constitution',
+            'Presidential decree',
+            'Government Regulations',
+            'Ministerial Regulations',
+            'NAAHE Regulations',
+            'IAAHEH Regulations'
         ];
 
         return view(
@@ -874,12 +912,19 @@ class AwalController extends Controller
             ->paginate(5);
 
         $katacari       = [
-            'Berita', 'Pengumuman', 'Standar', 'Regulation',
-            'Standar Pendidikan Profesi Dokter', 'Artikel'
+            'Berita',
+            'Pengumuman',
+            'Standar',
+            'Regulation',
+            'Standar Pendidikan Profesi Dokter',
+            'Artikel'
         ];
         $ganti          = [
-            'News', 'Announcement', 'Standard',
-            'Doctor Professional Education Standards', 'Article'
+            'News',
+            'Announcement',
+            'Standard',
+            'Doctor Professional Education Standards',
+            'Article'
         ];
 
         return view('awal.cari.carien', compact(
@@ -1041,10 +1086,32 @@ class AwalController extends Controller
             ->get();
 
         $bulan  = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
         ];
         $ganti  = [
-            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
         ];
 
 
@@ -1551,12 +1618,19 @@ class AwalController extends Controller
             ->latest()
             ->get();
         $cari           = [
-            'Berita', 'Pengumuman', 'Standar', 'Regulation',
-            'Standar Pendidikan Profesi Dokter', 'Artikel'
+            'Berita',
+            'Pengumuman',
+            'Standar',
+            'Regulation',
+            'Standar Pendidikan Profesi Dokter',
+            'Artikel'
         ];
         $ganti          = [
-            'News', 'Announcement', 'Standard',
-            'Doctor Professional Education Standards', 'Article'
+            'News',
+            'Announcement',
+            'Standard',
+            'Doctor Professional Education Standards',
+            'Article'
         ];
 
         // return $beritas;
@@ -1603,10 +1677,32 @@ class AwalController extends Controller
             ->get();
 
         $bulan  = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
         ];
         $ganti  = [
-            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
         ];
 
         return view(
@@ -1900,12 +1996,19 @@ class AwalController extends Controller
             ->get();
 
         $cari           = [
-            'Berita', 'Pengumuman', 'Standar', 'Regulation',
-            'Standar Pendidikan Profesi Dokter', 'Artikel'
+            'Berita',
+            'Pengumuman',
+            'Standar',
+            'Regulation',
+            'Standar Pendidikan Profesi Dokter',
+            'Artikel'
         ];
         $ganti          = [
-            'News', 'Announcement', 'Standard',
-            'Doctor Professional Education Standards', 'Article'
+            'News',
+            'Announcement',
+            'Standard',
+            'Doctor Professional Education Standards',
+            'Article'
         ];
 
         return view(
@@ -1952,12 +2055,19 @@ class AwalController extends Controller
             ->get();
 
         $cari           = [
-            'Berita', 'Pengumuman', 'Standar', 'Regulation',
-            'Standar Pendidikan Profesi Dokter', 'Artikel'
+            'Berita',
+            'Pengumuman',
+            'Standar',
+            'Regulation',
+            'Standar Pendidikan Profesi Dokter',
+            'Artikel'
         ];
         $ganti          = [
-            'News', 'Announcement', 'Standard',
-            'Doctor Professional Education Standards', 'Article'
+            'News',
+            'Announcement',
+            'Standard',
+            'Doctor Professional Education Standards',
+            'Article'
         ];
 
         return view(
@@ -2010,10 +2120,32 @@ class AwalController extends Controller
             ->get();
 
         $bulan  = [
-            'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December'
         ];
         $ganti  = [
-            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+            'Januari',
+            'Februari',
+            'Maret',
+            'April',
+            'Mei',
+            'Juni',
+            'Juli',
+            'Agustus',
+            'September',
+            'Oktober',
+            'November',
+            'Desember'
         ];
 
 
@@ -2072,114 +2204,124 @@ class AwalController extends Controller
 
     public function rapatanggota()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.rapatanggota',
-          compact('tentangs','footers','ft'));
+        $katpro = KategoriProfile::where('nama_profile', 'Rapat Anggota')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
 
+
+        return view('awal.pimpinan.rapatanggota', compact('tentangs', 'footers', 'ft', 'profil'));
     }
+
     public function pengawas()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.pengawas',
-          compact('tentangs','footers','ft'));
-
+        return view(
+            'awal.pimpinan.pengawas',
+            compact('tentangs', 'footers', 'ft')
+        );
     }
     public function pengurus()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.pengurus',
-          compact('tentangs','footers','ft'));
-
+        return view(
+            'awal.pimpinan.pengurus',
+            compact('tentangs', 'footers', 'ft')
+        );
     }
     public function koordinator()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.koordinator',
-          compact('tentangs','footers','ft'));
-
+        return view(
+            'awal.pimpinan.koordinator',
+            compact('tentangs', 'footers', 'ft')
+        );
     }
     public function subkoor()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.subkoor',
-          compact('tentangs','footers','ft'));
-
+        return view(
+            'awal.pimpinan.subkoor',
+            compact('tentangs', 'footers', 'ft')
+        );
     }
     public function komite()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.komite',
-          compact('tentangs','footers','ft'));
-
+        return view(
+            'awal.pimpinan.komite',
+            compact('tentangs', 'footers', 'ft')
+        );
     }
     public function pmi()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.pmi',
-          compact('tentangs','footers','ft'));
-
+        return view(
+            'awal.pimpinan.pmi',
+            compact('tentangs', 'footers', 'ft')
+        );
     }
     public function direktorat()
     {
-      $kbhs           = KatBahasa::where('namakbhs','Indonesia')->first();
-      $ft             = Footer::where('njudul','=','navigasi')->get();
-      $footers        = Footer::where('njudul','!=','navigasi')->limit(5)->get();
-      $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
-                          ->limit(1)
-                          ->latest()
-                          ->get();
+        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+            ->limit(1)
+            ->latest()
+            ->get();
 
-      return view('awal.pimpinan.direktorat',
-          compact('tentangs','footers','ft'));
-
+        return view(
+            'awal.pimpinan.direktorat',
+            compact('tentangs', 'footers', 'ft')
+        );
     }
 }

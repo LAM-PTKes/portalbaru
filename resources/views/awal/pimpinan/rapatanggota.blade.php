@@ -1,6 +1,60 @@
 @extends('awal.template.app')
 @section('title', 'Rapat Anggota - LAM-PTKes')
 @section('content')
+    <style>
+        .profil-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .advs-box {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            background: #fff;
+        }
+
+        .advs-box .img-box img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .advs-box .content-box {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .advs-box .content-box h4 {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.3em;
+            margin-bottom: 5px;
+            word-wrap: break-word;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            /* maksimal 2 baris */
+            -webkit-box-orient: vertical;
+        }
+
+        .advs-box .content-box h5 {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+            line-height: 1.2em;
+        }
+
+        .advs-box .content-box hr.e {
+            margin-top: auto;
+        }
+    </style>
     <div class="header-base">
         <div class="container">
             <div class="row">
@@ -19,188 +73,28 @@
             </div>
         </div>
     </div>
-    <div class="section-empty section-item text-center">
-         <div class="container content">
-             <div class="row">
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/usman.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Drg. Usman Sumantri, M.Sc</h4>
-                             <h5>Ketua Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/dedi.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Dedi Supratman, SKM, MKM</h4>
-                             <h5>Sekretaris</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/adib.png') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>DR. Dr. Mohammad Adib khumaidi, Sp.OT</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/budi.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Prof. Dr. Budi Santoso, Dr., Sp.OG(K)</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        </div>
-        <hr class="space" />
-                <div class="row">
-	        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/suryono.png') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>drg. Suryono, S.H., M.M., Ph.D</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-         <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/harif.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Dr.Harif Fadhillah, S.Kp., SH., M.Kep., MH</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/ade.png') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Dr. Ade Jubaedah, SSiT, MM, MKM</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/agus.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Agus Setiawan, SKp., MN., DN</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        </div>
-        <hr class="space" />
-                <div class="row">
-	        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/jumiarni.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Dra. Jumiarni Ilyas, M.Kes</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/noffendri.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Apt Noffendri Roestam, SSi</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/doddy.png') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Ir. Doddy Izwardy, B.Sc. MA., Ph.D</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/budisetiawan.png') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Prof. Dr. Ir. Budi Setiawan, MS</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        </div>
-        <hr class="space" />
-        <div class="row">
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/yandi.png') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Prof. Dr. apt. Yandi Syukri, S.Si., M.Si</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-        <div class="col-md-3">
-                     <div class="advs-box" data-anima="scale-up" data-trigger="hover">
-                         <a class="img-box">
-                             <img class="anima" src="{{ asset('lamptkes/images/asnawi.jpg') }}" alt="" />
-                         </a>
-                         <div class="content-box">
-                             <h4>Prof. Asnawi Abdullah, SKM., MHSM, MSc., HPPF, DLSHTM, Ph.D</h4>
-                             <h5>Anggota</h5>
-                             <hr class="e" />
-                         </div>
-                     </div>
-                 </div>
-             </div>
-         </div>
-     </div>
 
+    <div class="section-empty section-item text-center">
+        <div class="container content">
+            <div class="profil-grid">
+                @foreach ($profil as $v)
+                    <div class="advs-box" data-anima="scale-up" data-trigger="hover">
+                        <a class="img-box">
+                            <img class="anima"
+                                src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $v->img]) }}"
+                                alt="{{ $v->nama }}" />
+                        </a>
+                        <div class="content-box">
+                            <div>
+                                <h4>{{ $v->nama }}</h4>
+                                <h5>{{ $v->jabatan->jabatan ?? '-' }}</h5>
+                            </div>
+                            <hr class="e" />
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+        </div>
+    </div>
 @endsection
