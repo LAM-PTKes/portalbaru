@@ -1,7 +1,7 @@
 <link rel="stylesheet" media="screen, print" href="{{ asset('admin/dist/css/notifications/toastr/toastr.css') }}">
 <script src="{{ asset('admin/dist/js/notifications/toastr/toastr.js') }}"></script>
 
-@if (session('asup'))
+@if (session('asups'))
     <script>
         $(document).ready(function() {
             toastr.options = {
@@ -11,7 +11,22 @@
                 "timeOut": "5000"
             };
 
-            toastr.success("{!! session('asup') !!}");
+            toastr.success("{!! session('asups') !!}");
+        });
+    </script>
+@endif
+
+@if (session('success'))
+    <script>
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "timeOut": "5000"
+            };
+
+            toastr.success("{!! session('success') !!}");
         });
     </script>
 @endif

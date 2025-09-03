@@ -3,17 +3,21 @@
     Capaian Tahunan
 @endsection
 @section('content')
-    <script>
+
+<script>
         function hapus(id) {
-            var swalWithBootstrapButtons = Swal.mixin({
-                customClass: {
+            var swalWithBootstrapButtons = Swal.mixin(
+            {
+                customClass:
+                {
                     confirmButton: "btn btn-outline-success",
                     cancelButton: "btn btn-outline-danger mr-2"
                 },
                 buttonsStyling: false
             });
             swalWithBootstrapButtons
-                .fire({
+                .fire(
+                {
                     title: "Apakah Kamu Yakin Mau delete?",
                     text: "",
                     type: "warning",
@@ -22,18 +26,22 @@
                     cancelButtonText: "No, cancel!",
                     reverseButtons: true
                 })
-                .then(function(result) {
-                    if (result.value) {
-                        $('#delete_data_' + id).submit();
+                .then(function(result)
+                {
+                    if (result.value)
+                    {
+                        $('#delete_data_'+id).submit();
                         swalWithBootstrapButtons.fire(
                             "Deleted!",
                             "Your data has been deleted.",
                             "success"
                         );
-                    } else if (
+                    }
+                    else if (
                         // Read more about handling dismissals
                         result.dismiss === Swal.DismissReason.cancel
-                    ) {
+                    )
+                    {
                         swalWithBootstrapButtons.fire(
                             "Cancelled",
                             " <i class='fas fa-meh fa-4x'></i>",
@@ -43,22 +51,23 @@
                 });
         }
 
-        $(document).ready(function() {
+        $(document).ready(function(){
             $("#example-modal-alert").modal('show');
 
         });
 
-        $(document).ready(function() {
-            $('#checkbox').on('change', function() {
-                $('#password').attr('type', $('#checkbox').prop('checked') == true ? "text" : "password");
+        $(document).ready(function(){
+            $('#checkbox').on('change', function(){
+                $('#password').attr('type',$('#checkbox').prop('checked')==true?"text":"password");
             });
         });
-    </script>
+
+</script>
     <main id="js-page-content" role="main" class="page-content">
         <ol class="breadcrumb page-breadcrumb">
             <li class="breadcrumb-item"><a href="javascript:void(0);">LAMPT-Kes </a></li>
             <li class="breadcrumb-item">Capaian Tahunan</li>
-            <li class="position-absolute pos-top pos-right d-none d-sm-block"><span>{{ date('d F Y') }}</span></li>
+            <li class="position-absolute pos-top pos-right d-none d-sm-block"><span>{{ date('d F Y')}}</span></li>
         </ol>
         <div class="subheader">
             <h1 class="subheader-title">
@@ -73,29 +82,24 @@
                             Tabel <span class="fw-300"><i>Capaian Tahunan</i></span>
                         </h2>
                         <div class="panel-toolbar">
-                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip"
-                                data-offset="0,10" data-original-title="Collapse"></button>
-                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip"
-                                data-offset="0,10" data-original-title="Fullscreen"></button>
-                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10"
-                                data-original-title="Close"></button>
+                            <button class="btn btn-panel" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>
+                            <button class="btn btn-panel" data-action="panel-fullscreen" data-toggle="tooltip" data-offset="0,10" data-original-title="Fullscreen"></button>
+                            <button class="btn btn-panel" data-action="panel-close" data-toggle="tooltip" data-offset="0,10" data-original-title="Close"></button>
                         </div>
                     </div>
                     <div class="panel-container show">
                         <div class="panel-content">
                             @include('admin.template.partials._alerts')
                             <!-- Button trigger modal -->
-                            @if (auth()->user()->role == 'Ngadimin' || auth()->user()->role == 'Sekretariat')
-                                <button type="button" class="btn btn-outline-success waves-effect waves-themed"
-                                    data-toggle="modal" data-target="#default-example-modal">
+                            @if(auth()->user()->role == 'Ngadimin' || auth()->user()->role == 'Sekretariat')
+                                <button type="button" class="btn btn-outline-success waves-effect waves-themed" data-toggle="modal" data-target="#default-example-modal">
                                     <span class="fal fa-plus mr-2"></span>
                                     Capaian Tahunan
                                 </button>
                             @endif
 
                             <!-- Modal -->
-                            <div class="modal fade" id="default-example-modal" tabindex="-1" role="dialog"
-                                aria-hidden="true">
+                            <div class="modal fade" id="default-example-modal" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -109,67 +113,56 @@
                                                 <span aria-hidden="true"><i class="fal fa-times"></i></span>
                                             </button>
                                         </div>
-                                        <form action="{{ route('capaian.store') }}" method="POST" accept-charset="utf-8"
-                                            class="was-validated" enctype="multipart/form-data">
+                                        <form action="{{ route('capaian.store') }}" method="POST" accept-charset="utf-8" class="was-validated" enctype="multipart/form-data">
                                             {{ csrf_field() }}
                                             {{ method_field('POST') }}
 
                                             <div class="modal-body">
 
-                                                <div class="form-group">
-                                                    <label class="form-label" for="judul">Judul</label>
-                                                    <input type="text" name="judul" id="judul"
-                                                        class="form-control is-valid" required="">
-                                                    <div class="invalid-feedback">Wajib Di isi</div>
-                                                </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="judul">Judul</label>
+                                                <input type="text" name="judul"  id="judul" class="form-control is-valid" required="" >
+                                                <div class="invalid-feedback">Wajib Di isi</div>
+                                            </div>
 
-                                                <div class="form-group">
-                                                    <label class="form-label" for="datepicker">Capaian Tahun</label>
-                                                    <div class="input-group">
-                                                        <input type="text" autocomplete="off" name="tahun"
-                                                            class="form-control is-valid" placeholder="dd-mm-yyyy"
-                                                            id="datepicker" required="">
-                                                        <div class="input-group-append">
-                                                            <span class="input-group-text fs-xl">
-                                                                <i class="fal fa-calendar-times"></i>
-                                                            </span>
-                                                        </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="datepicker">Capaian Tahun</label>
+                                                <div class="input-group">
+                                                    <input type="text" autocomplete="off" name="tahun" class="form-control is-valid" placeholder="dd-mm-yyyy" id="datepicker" required="">
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text fs-xl">
+                                                            <i class="fal fa-calendar-times"></i>
+                                                        </span>
                                                     </div>
-                                                    <div class="invalid-feedback">Wajib Di isi</div>
                                                 </div>
+                                                <div class="invalid-feedback">Wajib Di isi</div>
+                                            </div>
 
-                                                <div class="form-group">
-                                                    <label class="form-label" for="katbahasa">Kategori Bahasa</label>
-                                                    <select name="katbahasa" id="katbahasa" class="form-control is-valid"
-                                                        required="">
-                                                        <option value>Select</option>
-                                                        @foreach ($katbhs as $bhs)
-                                                            <option value="{{ $bhs->id }}">{{ $bhs->namakbhs }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    <div class="invalid-feedback">Wajib Di isi</div>
-                                                </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="katbahasa">Kategori Bahasa</label>
+                                                <select name="katbahasa" id="katbahasa" class="form-control is-valid" required="">
+                                                    <option value>Select</option>
+                                                    @foreach($katbhs as $bhs)
+                                                        <option value="{{ $bhs->id }}">{{ $bhs->namakbhs }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <div class="invalid-feedback">Wajib Di isi</div>
+                                            </div>
 
-                                                <div class="form-group">
-                                                    <label class="form-label" for="nama_file">
-                                                        File Capaian Tahunan
-                                                        <p style="color: red;">
-                                                            * (Bentuk File Extensi .rar, .zip, .pdf, .docx, .doc, .xlsx,
-                                                            .xls, .pptx, .ppt)
-                                                        </p>
-                                                    </label>
-                                                    <input type="file" name="nama_file" id="nama_file"
-                                                        class="form-control is-valid"
-                                                        accept=".rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt"
-                                                        required="">
-                                                    <div class="invalid-feedback">Wajib Di isi</div>
-                                                </div>
+                                            <div class="form-group">
+                                                <label class="form-label" for="nama_file">
+                                                    File Capaian Tahunan
+                                                    <p style="color: red;">
+                                                        * (Bentuk File Extensi .rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt)
+                                                    </p>
+                                                </label>
+                                                <input type="file" name="nama_file" id="nama_file" class="form-control is-valid" accept=".rar, .zip, .pdf, .docx, .doc, .xlsx, .xls, .pptx, .ppt" required="">
+                                                <div class="invalid-feedback">Wajib Di isi</div>
+                                            </div>
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-outline-danger"
-                                                    data-dismiss="modal">
+                                                <button type="button" class="btn btn-outline-danger" data-dismiss="modal">
                                                     <span class="fal fa-times mr-1"></span> Close
                                                 </button>
                                                 <button type="submit" class="btn btn-outline-success">
@@ -183,66 +176,48 @@
 
                             <br><br>
 
+
                             <!-- datatable start -->
                             <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
                                 <thead class="bg-primary-600">
                                     <tr>
-                                        <th>
-                                            <center>No</center>
-                                        </th>
-                                        <th>
-                                            <center>Action</center>
-                                        </th>
-                                        <th>
-                                            <center>judul</center>
-                                        </th>
-                                        <th>
-                                            <center>Capaian Tahun</center>
-                                        </th>
-                                        <th>
-                                            <center>Kategori Bahasa</center>
-                                        </th>
-                                        <th>
-                                            <center>Nama File</center>
-                                        </th>
+                                        <th><center>No</center></th>
+                                        <th><center>judul</center></th>
+                                        <th><center>Capaian Tahun</center></th>
+                                        <th><center>Kategori Bahasa</center></th>
+                                        <th><center>Nama File</center></th>
+                                        <th><center>Action</center></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($capaian as $cpt)
+                                    @foreach($capaian as $cpt)
                                         <tr>
                                             <td align="center">{{ $no++ }}</td>
-                                            <td align="center">
-                                                <form action="{{ route('capaian.destroy', $cpt) }}" method="post"
-                                                    id="delete_data_{{ $cpt->id }}">
-                                                    {{ csrf_field() }}
-                                                    {{ method_field('DELETE') }}
-                                                    <a href="{{ route('capaian.edit', $cpt) }}">
-                                                        <button type="button" class="btn btn-sm btn-outline-warning"
-                                                            data-toggle="tooltip" data-placement="top" title=""
-                                                            data-original-title="Edit">
-                                                            <i class="fa fa-edit"></i>
-                                                        </button>
-                                                    </a>
-                                                    @if (auth()->user()->role == 'Ngadimin')
-                                                        <button type="button" class="btn btn-sm btn-outline-danger"
-                                                            data-toggle="tooltip" data-placement="top" title=""
-                                                            data-original-title="Delete"
-                                                            onclick="hapus('{{ $cpt->id }}')">
-                                                            <i class="fas fa-trash-alt"></i>
-                                                        </button>
-                                                    @endif
-                                                </form>
-                                            </td>
                                             <td align="justify">{{ $cpt->judul }} </td>
                                             <td align="center">
                                                 {{ str_replace($bulan, $ganti, date('F Y', strtotime($cpt->tahun))) }}
                                             </td>
                                             <td align="center">{{ $cpt->katbahasa->namakbhs }}</td>
                                             <td align="center">
-                                                <a href="{{ route('secure.document.folder', ['folder' => 'unduhan', 'filename' => $cpt->nama_file]) }}"
-                                                    title="" target="blank">
+                                                <a href="{{ route('secure.document.folder', ['folder' => 'unduhan', 'filename' => $cpt->nama_file]) }}" title="" target="blank">
                                                     {{ $cpt->nama_file }}
                                                 </a>
+                                            </td>
+                                            <td align="center">
+                                                <form action="{{route('capaian.destroy', $cpt)}}" method="post" id="delete_data_{{ $cpt->id }}">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                    <a href="{{ route('capaian.edit', $cpt) }}">
+                                                        <button type="button" class="btn btn-sm btn-outline-warning" data-toggle="tooltip" data-placement="top" title="" data-original-title="Edit">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                    </a>
+                                                    @if(auth()->user()->role == 'Ngadimin')
+                                                        <button type="button" class="btn btn-sm btn-outline-danger" data-toggle="tooltip" data-placement="top" title="" data-original-title="Delete" onclick="hapus('{{ $cpt->id }}')">
+                                                            <i class="fas fa-trash-alt"></i>
+                                                        </button>
+                                                    @endif
+                                                </form>
                                             </td>
                                         </tr>
                                     @endforeach
@@ -255,4 +230,5 @@
             </div>
         </div>
     </main>
+
 @endsection

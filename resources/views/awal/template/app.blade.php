@@ -130,79 +130,69 @@
                                 </a>
                             </li>
                             <li class="dropdown mega-dropdown mega-tabs">
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tentang Kami <span
-                                        class="caret"></span></a>
-                                <div class="mega-menu dropdown-menu multi-level row bg-menu">
-                                    <div class="tab-box" data-tab-anima="fade-left">
-                                        <ul class="nav nav-tabs">
-                                            <li class="active"><a href="#">Tentang dan Informasi LAM-PTKes</a>
-                                            </li>
-                                            <li><a href="#">Peraturan dan Layanan</a></li>
-                                            <li><a href="#">Dukungan Layanan</a></li>
-                                        </ul>
-                                        <div class="panel active">
-                                            <div class="col">
-                                                <h5>Tentang LAM-PTKes</h5>
-                                                <ul class="fa-ul text-s">
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('bprofil') }}">Profil LAM-PTKes</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('torgan') }}">Organisasi LAM-PTKes</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="#">Renstra LAM-PTKes</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="col">
-                                                <h5>Profil Pimpinan</h5>
-                                                <ul class="fa-ul text-s">
-                                                    <li><i class="fa-li fa fa-list"></i> <a
-                                                            href="{{ route('rapatanggota') }}">Rapat Anggota</a></li>
-                                                    <li><i class="fa-li fa fa-list"></i> <a
-                                                            href="{{ route('pengawas') }}">Pengawas LAM-PTKes</a></li>
-                                                    <li><i class="fa-li fa fa-list"></i> <a
-                                                            href="{{ route('pengurus') }}">Pengurus LAM-PTKes</a></li>
-                                                    <li><i class="fa-li fa fa-list"></i> <a
-                                                            href="{{ route('koordinator') }}">Koordinator</a></li>
-                                                    <li><i class="fa-li fa fa-list"></i> <a
-                                                            href="{{ route('subkoor') }}">Sub Koordinator</a></li>
-                                                    <li><i class="fa-li fa fa-list"></i> <a
-                                                            href="{{ route('komite') }}">Komite Akreditasi</a></li>
-                                                    <li><i class="fa-li fa fa-list"></i> <a
-                                                            href="{{ route('pmi') }}">Penjaminan Mutu Internal</a>
-                                                    </li>
-                                                    <!-- <li><i class="fa-li fa fa-list"></i> <a href="{{ route('direktorat') }}">Direktorat</a></li> -->
-                                                </ul>
-                                            </div>
-                                            <div class="col">
-                                                <h5>LAM-PTKes Terkini</h5>
-                                                <ul class="fa-ul text-s">
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tberita') }}">Berita Terkini</a>
-                                                    </li>
-                                                    <!-- <li>
+                                                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Tentang Kami <span class="caret"></span></a>
+                                                            <div class="mega-menu dropdown-menu multi-level row bg-menu">
+                                                                <div class="tab-box" data-tab-anima="fade-left">
+                                                                    <ul class="nav nav-tabs">
+                                                                        <li class="active"><a href="#">Tentang dan Informasi LAM-PTKes</a></li>
+                                                                        <li><a href="#">Peraturan dan Layanan</a></li>
+                                                                        <li><a href="#">Dukungan Layanan</a></li>
+                                                                    </ul>
+                                                                    <div class="panel active">
+                                                                        <div class="col">
+                                                                            <h5>Tentang LAM-PTKes</h5>
+                                                                            <ul class="fa-ul text-s">
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('bprofil') }}">Profil LAM-PTKes</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('torgan') }}">Organisasi LAM-PTKes</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="#">Renstra LAM-PTKes</a>
+                                                                              </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <h5>Profil Pimpinan</h5>
+                                                                            <ul class="fa-ul text-s">
+                                                                                <li><i class="fa-li fa fa-list"></i> <a href="{{ route('rapatanggota') }}">Rapat Anggota</a></li>
+                                                                                <li><i class="fa-li fa fa-list"></i> <a href="{{ route('pengawas') }}">Pengawas LAM-PTKes</a></li>
+                                                                                <li><i class="fa-li fa fa-list"></i> <a href="{{ route('pengurus') }}">Pengurus LAM-PTKes</a></li>
+                                                                                <li><i class="fa-li fa fa-list"></i> <a href="{{ route('koordinator') }}">Koordinator</a></li>
+                                                                                <li><i class="fa-li fa fa-list"></i> <a href="{{ route('subkoor') }}">Sub Koordinator</a></li>
+                                                                                <li><i class="fa-li fa fa-list"></i> <a href="{{ route('komite') }}">Komite Akreditasi</a></li>
+                                                                                <li><i class="fa-li fa fa-list"></i> <a href="{{ route('pmi') }}">Penjaminan Mutu Internal</a></li>
+                                                                                <!-- <li><i class="fa-li fa fa-list"></i> <a href="{{ route('direktorat') }}">Direktorat</a></li> -->
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <h5>LAM-PTKes Terkini</h5>
+                                                                            <ul class="fa-ul text-s">
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('tberita') }}">Berita Terkini</a>
+                                                                              </li>
+                                                                              <!-- <li>
                                                                                   <i class="fa-li fa fa-list"></i>
                                                                                   <a href="{{ route('regulasi') }}">Regulasi</a>
                                                                               </li> -->
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tagenda') }}">Kegiatan LAM-PTKes</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tpengumuman') }}">Pengumuman LAM-PTKes</a>
-                                                    </li>
-                                                    <!-- <li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('tagenda') }}">Kegiatan LAM-PTKes</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('tpengumuman') }}">Pengumuman LAM-PTKes</a>
+                                                                              </li>
+                                                                              <!-- <li>
                                                                                   <i class="fa-li fa fa-list"></i>
                                                                                   <a href="#">Rekrutmen Asesor</a>
                                                                               </li> -->
-                                                    <!-- <li>
+                                                                              <!-- <li>
                                                                                   <i class="fa-li fa fa-list"></i>
                                                                                   <a href="{{ route('timp') }}">Tim Penilai</a>
                                                                               </li>
@@ -214,106 +204,104 @@
                                                                                   <i class="fa-li fa fa-list"></i>
                                                                                   <a href="{{ route('tglosariumakreditasi') }}">Glosarium Akreditasi</a>
                                                                               </li> -->
-                                                </ul>
-                                            </div>
-                                            <div class="col">
-                                                <h5>Laporan LAM-PTKes</h5>
-                                                <ul class="fa-ul text-s">
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tcapaian') }}">Laporan Tahunan</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="panel">
-                                            <div class="col">
-                                                <h5>Peraturan</h5>
-                                                <ul class="fa-ul text-s">
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('reguu') }}">Undang-Undang</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('regpem') }}">Peraturan Pemerintah</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('regpres') }}">Peraturan Presiden</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('regmen') }}">Peraturan Menteri</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('regbanpt') }}">Peraturan BAN-PT</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('reglamptkes') }}">Peraturan LAM-PTKes</a>
-                                                    </li>
-                                                    <!-- <li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <h5>Laporan LAM-PTKes</h5>
+                                                                            <ul class="fa-ul text-s">
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('tcapaian') }}">Laporan Tahunan</a>
+                                                                              </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="panel">
+                                                                        <div class="col">
+                                                                            <h5>Peraturan</h5>
+                                                                            <ul class="fa-ul text-s">
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('reguu') }}">Undang-Undang</a>
+                                                                              </li>
+                                                                               <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('regpem') }}">Peraturan Pemerintah</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('regpres') }}">Peraturan Presiden</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('regmen') }}">Peraturan Menteri</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('regbanpt') }}">Peraturan BAN-PT</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="{{ route('reglamptkes') }}">Peraturan LAM-PTKes</a>
+                                                                              </li>
+                                                                             <!-- <li>
                                                                                   <i class="fa-li fa fa-list"></i>
                                                                                   <a href="#">Pedoman Tim Penilai</a>
                                                                               </li> -->
-                                                    <!-- <li>
+                                                                              <!-- <li>
                                                                                   <i class="fa-li fa fa-list"></i>
                                                                                   <a href="https://dev-simakv2.lamptkes.org">Developer SIMAk V2</a>
                                                                               </li> -->
-                                                </ul>
-                                            </div>
-                                            <div class="col">
-                                                <h5>Layanan</h5>
-                                                <ul class="fa-ul text-s">
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a
-                                                            href="https://lamptkes.org/Pencarian/af83b584bdb349059ef460e6d2c990e9/Detail">Permohonan
-                                                            Legalisir</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="#">SK Prodi Baru</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="#">Penyesuaian Akreditasi</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="#">Klinik Akreditasi</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tunduhan') }}">Semua Unduhan</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="panel">
-                                            <div class="col">
-                                                <h5>Dukungan</h5>
-                                                <ul class="fa-ul text-s">
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tsaran') }}">Saran & Harapan</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tfaq') }}">FAQ LAM-PTKes</a>
-                                                    </li>
-                                                    <li>
-                                                        <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tsitemap') }}">Sitemap LAM-PTKes</a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <h5>Layanan</h5>
+                                                                            <ul class="fa-ul text-s">
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="https://lamptkes.org/Pencarian/af83b584bdb349059ef460e6d2c990e9/Detail">Permohonan Legalisir</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="#">SK Prodi Baru</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="#">Penyesuaian Akreditasi</a>
+                                                                              </li>
+                                                                              <li>
+                                                                                  <i class="fa-li fa fa-list"></i>
+                                                                                  <a href="#">Klinik Akreditasi</a>
+                                                                              </li>
+                                                                                  <li>
+                                                                                      <i class="fa-li fa fa-list"></i>
+                                                                                      <a href="{{ route('tunduhan') }}">Semua Unduhan</a>
+                                                                                  </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="panel">
+                                                                        <div class="col">
+                                                                            <h5>Dukungan</h5>
+                                                                            <ul class="fa-ul text-s">
+                                                                                   <li>
+                                                                                      <i class="fa-li fa fa-list"></i>
+                                                                                      <a href="{{ route('tsaran') }}">Saran & Harapan</a>
+                                                                                  </li>
+                                                                                  <li>
+                                                                                      <i class="fa-li fa fa-list"></i>
+                                                                                      <a href="{{ route('tfaq') }}">FAQ LAM-PTKes</a>
+                                                                                  </li>
+                                                                                  <li>
+                                                                                      <i class="fa-li fa fa-list"></i>
+                                                                                      <a href="{{ route('tsitemap') }}">Sitemap LAM-PTKes</a>
+                                                                                  </li>
+                                                                            </ul>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </li>
                             <li class="dropdown mega-dropdown mega-tabs">
                                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">Akreditasi <span
                                         class="caret"></span></a>
@@ -362,37 +350,30 @@
                                             </div>
                                             <div class="col">
                                                 <h5><b>Akreditasi LAM-PTKes</b></h5>
-                                                <ul class="fa-ul text-s space-y-4" style="margin-bottom: 1rem;">
-                                                    {{-- <li>
+                                                <ul class="fa-ul text-s">
+                                                    <!-- <li>
                                                         <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('iakresembilan') }}">
-                                                            Instrumen 9 Kriteria
-                                                            <sup style="color: red">(2020 - 2024)</sup>
-
-                                                        </a>
-                                                    </li> --}}
+                                                        <a href="{{ route('iakresembilan') }}">Instrumen 9
+                                                            Kriteria</a>
+                                                    </li> -->
                                                     <li>
                                                         <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('iakreminimum') }}">Instrumen Izin Prodi
-                                                            Baru</a>
+                                                        <a href="{{ route('iakreminimum') }}">Instrumen Izin Prodi Baru</a>
                                                     </li>
                                                     <li>
-                                                        <i class="fa-li fa fa-list"></i><b>Instrumen APS Kualitatif</b>
-                                                        <sup style="color: red">New</sup>
-                                                        <ul>
-                                                            <!-- <li><a href="{{ route('iakreapsterakred') }}">Terakreditasi</a></li> -->
-                                                            <li><a href="{{ route('iakreapsterakredunggul') }}">Terakreditasi
-                                                                    Unggul</a></li>
-                                                        </ul>
-                                                    </li>
+                                                      <i class="fa-li fa fa-list"></i><b>Instrumen APS Kualitatif</b> <sup style="color: red">New</sup>
+                                                      <ul>
+                                                        <!-- <li><a href="{{ route('iakreapsterakred') }}">Terakreditasi</a></li> -->
+                                                        <li><a href="{{ route('iakreapsterakredunggul') }}">Terakreditasi Unggul</a></li>
+                                                      </ul>
+                                                    </li> 
                                                     <li>
                                                         <i class="fa-li fa fa-list"></i>
                                                         <a href="{{ route('pakre') }}">Telusur Proses Akreditasi</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa-li fa fa-list"></i>
-                                                        <a href="{{ route('tqaakre') }}">Alur dan Tahapan
-                                                            Akreditasi</a>
+                                                        <a href="{{ route('tqaakre') }}">Alur dan Tahapan Akreditasi</a>
                                                     </li>
                                                     <li>
                                                         <i class="fa-li fa fa-list"></i>
@@ -479,8 +460,8 @@
                                         SIMAk online
                                     </a>
                                 </li>
-                            </ul>
-                        </div>
+                            </ul>                       
+       </div>
                     </div>
                 </div>
             </div>
@@ -491,40 +472,38 @@
     @yield('content')
 
     <footer class="footer-base">
-        <div class="content">
+  <div class="content">
             <div class="container">
                 <div class="row">
                     <div class="col-md-4 footer-center text-left">
-                        @foreach ($tentangs as $tentang)
-                            <img width="300" src="{{ asset('lamptkes/images/logo-lam-footer.png') }}"
-                                alt="" />
-                            <hr class="space m" />
-                            <p style="color: #000;" class="text-s">{!! $tentang->alamat !!}</p>
-                            <div class="tag-row text-s">
-                                <span style="color: #000;"><a style="color: #000;"
-                                        href="mailto:sekretariat@lamptkes.org?subject=feedback" "email me">
-                                        {{ $tentang->email }}
-                                    </a></span>
+                      @foreach($tentangs as $tentang)
+                        <img width="300" src="{{ asset('lamptkes/images/logo-lam-footer.png') }}" alt="" />
+      <hr class="space m" />
+      <p style="color: #000;" class="text-s">{!! $tentang->alamat !!}</p>
+                        <div class="tag-row text-s">
+                            <span style="color: #000;"><a style="color: #000;" href="mailto:sekretariat@lamptkes.org?subject=feedback" "email me">
+                                {{ $tentang->email }}
+                            </a></span>
 
-                                <span style="color: #000;">{{ $tentang->tlp }}</span><br>
-                                <span style="color: #000;">{{ $tentang->ponsel }}</span>
-                                <span style="color: #000;">{{ $tentang->kantor }}</span>
-                            </div>
+                            <span style="color: #000;">{{ $tentang->tlp }}</span><br>
+                            <span style="color: #000;">{{ $tentang->ponsel }}</span>
+                            <span style="color: #000;">{{ $tentang->kantor }}</span>
+                        </div>
                         @endforeach
                         <hr class="space m" />
                         <div class="btn-group social-group btn-group-icons">
-                            <a target="_blank" href="https://www.facebook.com/lamptkes/">
-                                <i style="color: #000;" class="fa fa-facebook text-xs circle"></i>
-                            </a>
-                            <a target="_blank" href="https://twitter.com/lamptkes">
-                                <i style="color: #000;" class="fa fa-twitter text-xs circle"></i>
-                            </a>
-                            <a target="_blank" href="https://www.instagram.com/lam_ptkes/?hl=id">
-                                <i style="color: #000;" class="fa fa-instagram text-xs circle"></i>
-                            </a>
-                            <a target="_blank" href="https://www.youtube.com/channel/UCowwtmEZB6Nw0fQozyA2qsQ">
-                                <i style="color: #000;" class="fa fa-youtube text-xs circle"></i>
-                            </a>
+                          <a target="_blank" href="https://www.facebook.com/lamptkes/">
+                              <i style="color: #000;" class="fa fa-facebook text-xs circle"></i>
+                          </a>
+                          <a target="_blank" href="https://twitter.com/lamptkes">
+                              <i style="color: #000;" class="fa fa-twitter text-xs circle"></i>
+                          </a>
+                          <a target="_blank" href="https://www.instagram.com/lam_ptkes/?hl=id">
+                              <i style="color: #000;" class="fa fa-instagram text-xs circle"></i>
+                          </a>
+                           <a target="_blank" href="https://www.youtube.com/channel/UCowwtmEZB6Nw0fQozyA2qsQ">
+                              <i style="color: #000;" class="fa fa-youtube text-xs circle"></i>
+                          </a>
                         </div>
                     </div>
                     <div class="col-md-4 footer-left text-left">
@@ -534,56 +513,51 @@
                                 <a style="color: #000;" href="{{ route('beranda') }}">Beranda</a><br />
                                 <a style="color: #000;" href="{{ route('statistik') }}">Statistik</a><br />
                                 <a style="color: #000;" href="{{ route('tnewslet') }}">Newsletter</a><br />
-                                <a style="color: #000;" href="{{ route('tglosariumakreditasi') }}">Glosarium
-                                    Akreditasi</a><br />
+                                <a style="color: #000;" href="{{ route('tglosariumakreditasi') }}">Glosarium Akreditasi</a><br />
                                 <a style="color: #000;" href="{{ route('tfaq') }}">FAQ</a><br />
                                 <a style="color: #000;" href="{{ route('tsitemap') }}">Sitemap</a><br />
-                                <a style="color: #000;" href="{{ route('hubkami') }}" role="button">Kontak
-                                    Kami</a><br />
+                                <a style="color: #000;" href="{{ route('hubkami') }}"  role="button">Kontak Kami</a><br />
                             </div>
                             <div class="col-md-6 text-s">
                                 <h3>Tautan Terkait</h3>
-                                <a style="color: #000;" href="https://www.kemdikbud.go.id/" target="_blank">
-                                    KEMDIKBUD
-                                </a><br />
-                                <a style="color: #000;" href="https://wfme.org/" target="_blank">
-                                    WFME
-                                </a><br />
-                                <a style="color: #000;" href="https://banpt.or.id/" target="_blank">
-                                    BAN-PT
-                                </a><br />
-                                <a style="color: #000;" href="https://www.apqr.co/" target="_blank">
-                                    APQR
-                                </a><br />
-                                <a style="color: #000;" href="http://kki.go.id/" target="_blank">
-                                    KKI
-                                </a><br />
-                                <a style="color: #000;" href="https://apqn.org/" target="_blank">
-                                    APQN
-                                </a><br />
-                                <a style="color: #000;" href="https://www.inqaahe.org/" target="_blank">
-                                    INQAAHE
-                                </a><br />
+                                    <a style="color: #000;" href="https://www.kemdikbud.go.id/" target="_blank">
+                                        KEMDIKBUD
+                                    </a><br />
+                                    <a style="color: #000;" href="https://wfme.org/" target="_blank">
+                                        WFME
+                                    </a><br />
+                                    <a style="color: #000;" href="https://banpt.or.id/" target="_blank">
+                                        BAN-PT
+                                    </a><br />
+                                    <a style="color: #000;" href="https://www.apqr.co/" target="_blank">
+                                        APQR
+                                    </a><br />
+                                    <a style="color: #000;" href="http://kki.go.id/" target="_blank">
+                                        KKI
+                                    </a><br />
+                                    <a style="color: #000;" href="https://apqn.org/" target="_blank">
+                                        APQN
+                                    </a><br />
+                                    <a style="color: #000;" href="https://www.inqaahe.org/" target="_blank">
+                                        INQAAHE
+                                    </a><br />
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4 footer-left text-left">
                         <h3>Standar Mutu Terbaik</h3>
                         <p style="color: #000;" class="text-s">
-                            Telah bersertifikat ISO 9001:2015, memastikan kualitas manajemen yang unggul dan pelayanan
-                            terbaik.
+                          Telah bersertifikat ISO 9001:2015, memastikan kualitas manajemen yang unggul dan pelayanan terbaik.
                         </p>
                         <hr class="space xs" />
-                        <img width="110" src="{{ asset('lamptkes/images/kan-9001.png') }}"
-                            alt="banpt" />&nbsp;&nbsp;&nbsp;
-                        <img width="60" src="{{ asset('lamptkes/images/ISO-9001.png') }}" alt="banpt" />
+                          <img width="110" src="{{ asset('lamptkes/images/kan-9001.png') }}" alt="banpt" />&nbsp;&nbsp;&nbsp;
+                          <img width="60" src="{{ asset('lamptkes/images/ISO-9001.png') }}" alt="banpt" />
                     </div>
                 </div>
             </div>
             <div class="row copy-row">
                 <div style="color: #000;" class="col-md-12 copy-text">
-                    Copyright © {{ date('Y') }} All Rights Reserved by <a style="color: #000;"
-                        href="lamptkes.org">LAM-PTKes</a>
+                    Copyright © {{ date('Y')}} All Rights Reserved by <a style="color: #000;" href="lamptkes.org">LAM-PTKes</a>
                 </div>
             </div>
         </div>
@@ -759,5 +733,4 @@
     </footer>
 
 </body>
-
 </html>
