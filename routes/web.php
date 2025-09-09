@@ -441,63 +441,16 @@ Route::get('secure/document/{folder}/{subfolder}/{filename}', 'SecureFileControl
     ->where('filename', '[^\/]+');
 
 // Route untuk redirect specific file
-Route::get('/unduhan/Dokumen-Buku-IV-Kualitatif.pdf', function () {
+// Route::get('/unduhan/Dokumen-Buku-IV-Kualitatif.pdf', function () {
+//     return redirect()->route('secure.document.folder', [
+//         'folder' => 'unduhan',
+//         'filename' => 'Dokumen-Buku-IV-Kualitatif.pdf'
+//     ]);
+// });
+
+Route::get('/unduhan/{filename}', function ($filename) {
     return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => 'Dokumen-Buku-IV-Kualitatif.pdf'
+        'folder'   => 'unduhan',
+        'filename' => $filename,
     ]);
-});
-
-
-// Route untuk redirect specific file
-Route::get('/unduhan/Dokumen-06032023-1678039448.pdf', function () {
-    return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => 'Dokumen-06032023-1678039448.pdf'
-    ]);
-});
-
-// Route untuk redirect specific file
-Route::get('/unduhan/Dokumen-06032023-1678039591.pdf', function () {
-    return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => 'Dokumen-06032023-1678039591.pdf'
-    ]);
-});
-
-
-// Route untuk redirect specific file
-Route::get('/unduhan/Juknis Pengajuan Akreditasi Minimum Syarat Pembukaan Prodi Baru PTN BH.pdf', function () {
-    return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => 'Juknis Pengajuan Akreditasi Minimum Syarat Pembukaan Prodi Baru PTN BH.pdf'
-    ]);
-});
-
-Route::get('/unduhan/Dokumen-06012025-1736147207.pdf', function () {
-    return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => 'Dokumen-06012025-1736147207.pdf'
-    ]);
-});
-
-Route::get('/unduhan/002-PP-Prosedur-Pengajuan-Persyaratan-Minimum-Akreditasi-Pembukaan-prodi-kesehatan.pdf', function () {
-    return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => '002-PP-Prosedur-Pengajuan-Persyaratan-Minimum-Akreditasi-Pembukaan-prodi-kesehatan.pdf'
-    ]);
-});
-
-Route::get('/unduhan/01-PP-Prosedur-Pengajuan-Persyaratan-Minimum-Akreditasi-Pembukaan-Prodi-Kedokteran-Program.pdf', function () {
-    return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => '01-PP-Prosedur-Pengajuan-Persyaratan-Minimum-Akreditasi-Pembukaan-Prodi-Kedokteran-Program.pdf'
-    ]);
-});
-
-Route::get('/unduhan/Dokumen-15092021-1631679990.pdf', function () {
-    return redirect()->route('secure.document.folder', [
-        'folder' => 'unduhan',
-        'filename' => 'Dokumen-15092021-1631679990.pdf'
-    ]);
-});
+})->where('filename', '.*');

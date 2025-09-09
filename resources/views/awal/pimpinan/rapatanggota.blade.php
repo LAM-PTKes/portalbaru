@@ -33,23 +33,24 @@
         .advs-box .content-box h4 {
             font-size: 16px;
             font-weight: 600;
-            line-height: 1.3em;
+            line-height: 1.4em;
             margin-bottom: 5px;
             word-wrap: break-word;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            /* maksimal 2 baris */
-            -webkit-box-orient: vertical;
+            white-space: normal;
+            /* biar teks bisa turun ke bawah */
+            overflow: visible;
+            /* jangan dipotong */
+            text-overflow: unset;
         }
 
         .advs-box .content-box h5 {
             font-size: 14px;
             color: #555;
             margin-bottom: 10px;
-            line-height: 1.2em;
+            line-height: 1.3em;
+            white-space: normal;
         }
+
 
         .advs-box .content-box hr.e {
             margin-top: auto;

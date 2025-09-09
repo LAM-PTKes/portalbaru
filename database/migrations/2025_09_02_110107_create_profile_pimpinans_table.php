@@ -19,7 +19,7 @@ class CreateProfilePimpinansTable extends Migration
             $table->uuid('katprofile_id')->nullable();
             $table->uuid('jabatan_id')->nullable();
             $table->string('nama')->nullable();
-            $table->text('photo')->nullable();
+            $table->text('img')->nullable();
             $table->integer('no_urut')->nullable();
             $table->timestamps();
 

@@ -22,7 +22,7 @@ class ProfilePimpinanController extends Controller
 
         $no     = 1;
         $bhs    = KatBahasa::orderby('namakbhs')->get();
-        $profil = ProfilePimpinan::orderby('nama')->get();
+        $profil = ProfilePimpinan::latest()->get();
 
         return view('admin.profil.pimpinan', compact('no', 'bhs', 'profil'));
     }

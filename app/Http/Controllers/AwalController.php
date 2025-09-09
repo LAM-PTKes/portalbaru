@@ -2229,10 +2229,10 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'awal.pimpinan.pengawas',
-            compact('tentangs', 'footers', 'ft')
-        );
+        $katpro = KategoriProfile::where('nama_profile', 'Pengawas LAM-PTKes')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
+
+        return view('awal.pimpinan.pengawas', compact('tentangs', 'footers', 'ft', 'profil'));
     }
     public function pengurus()
     {
@@ -2244,11 +2244,12 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'awal.pimpinan.pengurus',
-            compact('tentangs', 'footers', 'ft')
-        );
+        $katpro = KategoriProfile::where('nama_profile', 'Pengurus LAM-PTKes')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
+
+        return view('awal.pimpinan.pengurus', compact('tentangs', 'footers', 'ft', 'profil'));
     }
+
     public function koordinator()
     {
         $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
@@ -2259,11 +2260,12 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'awal.pimpinan.koordinator',
-            compact('tentangs', 'footers', 'ft')
-        );
+        $katpro = KategoriProfile::where('nama_profile', 'Koordinator LAM-PTKes')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
+
+        return view('awal.pimpinan.koordinator', compact('tentangs', 'footers', 'ft', 'profil'));
     }
+
     public function subkoor()
     {
         $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
@@ -2274,11 +2276,12 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'awal.pimpinan.subkoor',
-            compact('tentangs', 'footers', 'ft')
-        );
+        $katpro = KategoriProfile::where('nama_profile', 'Sub Koordinator')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
+
+        return view('awal.pimpinan.subkoor', compact('tentangs', 'footers', 'ft', 'profil'));
     }
+
     public function komite()
     {
         $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
@@ -2289,11 +2292,12 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'awal.pimpinan.komite',
-            compact('tentangs', 'footers', 'ft')
-        );
+        $katpro = KategoriProfile::where('nama_profile', 'Komite Akreditasi')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
+
+        return view('awal.pimpinan.komite', compact('tentangs', 'footers', 'ft', 'profil'));
     }
+
     public function pmi()
     {
         $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
@@ -2304,11 +2308,12 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'awal.pimpinan.pmi',
-            compact('tentangs', 'footers', 'ft')
-        );
+        $katpro = KategoriProfile::where('nama_profile', 'Penjamin Mutu Internal')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
+
+        return view('awal.pimpinan.pmi', compact('tentangs', 'footers', 'ft', 'profil'));
     }
+
     public function direktorat()
     {
         $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
@@ -2319,9 +2324,9 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        return view(
-            'awal.pimpinan.direktorat',
-            compact('tentangs', 'footers', 'ft')
-        );
+        $katpro = KategoriProfile::where('nama_profile', 'Direktorat')->value('id');
+        $profil = ProfilePimpinan::where([['katbahasa_id', $kbhs->id], ['katprofile_id', $katpro]])->orderby('no_urut')->get();
+
+        return view('awal.pimpinan.direktorat', compact('tentangs', 'footers', 'ft', 'profil'));
     }
 }
