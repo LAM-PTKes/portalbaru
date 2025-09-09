@@ -1265,11 +1265,12 @@ class AwalController extends Controller
     public function tbiaya()
     {
 
-        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
-        $kbrt           = KatBerita::where('namakbrt', 'Berita')->first();
-        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
-        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
-        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+        $kbhs     = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $kbrt     = KatBerita::where('namakbrt', 'Berita')->first();
+        $kbrt1    = KatBerita::where('namakbrt', 'Biaya Akreditasi')->first();
+        $ft       = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers  = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs = Kontak::where('katbahasa_id', $kbhs->id)
             ->limit(1)
             ->latest()
             ->get();
@@ -1285,11 +1286,17 @@ class AwalController extends Controller
             ->limit(3)
             ->latest()
             ->get();
-
-        return view(
-            'awal.akreditasi.biayakred',
-            compact('tentangs', 'beritas', 'footers', 'ft', 'agendas')
-        );
+        $biaya = Berita::where([
+            ['katbahasa_id', $kbhs->id],
+            ['katberita_id', $kbrt1->id],
+            ['is_show', '1'],
+            ['judul', 'Biaya Akreditasi'],
+        ])
+            ->limit(1)
+            ->latest()
+            ->get();
+        // return $biaya;
+        return view('awal.akreditasi.biayakred', compact('tentangs', 'beritas', 'footers', 'ft', 'agendas', 'biaya'));
     }
 
     /**
@@ -1302,11 +1309,12 @@ class AwalController extends Controller
     public function tbalikin()
     {
 
-        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
-        $kbrt           = KatBerita::where('namakbrt', 'Berita')->first();
-        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
-        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
-        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+        $kbhs     = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $kbrt     = KatBerita::where('namakbrt', 'Berita')->first();
+        $kbrt1    = KatBerita::where('namakbrt', 'Biaya Akreditasi')->first();
+        $ft       = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers  = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs = Kontak::where('katbahasa_id', $kbhs->id)
             ->limit(1)
             ->latest()
             ->get();
@@ -1322,11 +1330,17 @@ class AwalController extends Controller
             ->limit(3)
             ->latest()
             ->get();
+        $biaya = Berita::where([
+            ['katbahasa_id', $kbhs->id],
+            ['katberita_id', $kbrt1->id],
+            ['is_show', '1'],
+            ['judul', 'Tata Cara Pengembalian Dana'],
+        ])
+            ->limit(1)
+            ->latest()
+            ->get();
 
-        return view(
-            'awal.akreditasi.tpengembalian',
-            compact('tentangs', 'beritas', 'footers', 'ft', 'agendas')
-        );
+        return view('awal.akreditasi.tpengembalian', compact('tentangs', 'beritas', 'footers', 'ft', 'agendas', 'biaya'));
     }
 
     /**
@@ -1339,11 +1353,12 @@ class AwalController extends Controller
     public function tpabut()
     {
 
-        $kbhs           = KatBahasa::where('namakbhs', 'Indonesia')->first();
-        $kbrt           = KatBerita::where('namakbrt', 'Berita')->first();
-        $ft             = Footer::where('njudul', '=', 'navigasi')->get();
-        $footers        = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
-        $tentangs       = Kontak::where('katbahasa_id', $kbhs->id)
+        $kbhs     = KatBahasa::where('namakbhs', 'Indonesia')->first();
+        $kbrt     = KatBerita::where('namakbrt', 'Berita')->first();
+        $kbrt1    = KatBerita::where('namakbrt', 'Biaya Akreditasi')->first();
+        $ft       = Footer::where('njudul', '=', 'navigasi')->get();
+        $footers  = Footer::where('njudul', '!=', 'navigasi')->limit(5)->get();
+        $tentangs = Kontak::where('katbahasa_id', $kbhs->id)
             ->limit(1)
             ->latest()
             ->get();
@@ -1360,11 +1375,20 @@ class AwalController extends Controller
             ->latest()
             ->get();
 
-        $kudh = KatUnduhan::where('namaundh', 'Pajak')->limit(1)->get();
-        $udh = Unduhan::where([['katunduhan_id', collect($kudh)->pluck('id')], ['katbahasa_id', $kbhs->id]])->limit(1)->latest()->get();
+        $kudh  = KatUnduhan::where('namaundh', 'Pajak')->limit(1)->get();
+        $udh   = Unduhan::where([['katunduhan_id', collect($kudh)->pluck('id')], ['katbahasa_id', $kbhs->id]])->limit(1)->latest()->get();
+        $biaya = Berita::where([
+            ['katbahasa_id', $kbhs->id],
+            ['katberita_id', $kbrt1->id],
+            ['is_show', '1'],
+            ['judul', 'Pajak & Bukti Potong'],
+        ])
+            ->limit(1)
+            ->latest()
+            ->get();
 
         // return collect($udh)->pluck('nama_file');
-        return view('awal.akreditasi.tpajakbupot', compact('tentangs', 'beritas', 'footers', 'ft', 'agendas', 'udh'));
+        return view('awal.akreditasi.tpajakbupot', compact('tentangs', 'beritas', 'footers', 'ft', 'agendas', 'udh', 'biaya'));
     }
 
     /**

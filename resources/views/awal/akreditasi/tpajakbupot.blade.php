@@ -40,32 +40,7 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <p class="excerpt">
-                                    <p><strong>Pajak Biaya Akreditasi </strong></p>
-                                    <ul>
-                                        <li>Pajak Profesi Non Kedokteran dan Spesialis Rp 1.600.000</li>
-                                        <li>Pajak Profesi Kedokteran Rp 2.200.000</li>
-                                        <li>Pajak Vokasi dan Akademik Rp 1.310.000</li>
-                                    </ul>
-                                    <p><strong>Pajak Biaya Banding</strong></p>
-                                    <ul>
-                                        <li>Pajak banding sebesar Rp 700.000</li>
-                                    </ul>
-                                    <p><strong>Pajak Biaya Prodi Baru (Simak Minimum)</strong></p>
-                                    <ul>
-                                        <li>Pajak Prodi Profesi Non Kedokteran dan Baru Vokasi, Akademik &amp; Spesialis
-                                            sebesar Rp 800.000;</li>
-                                        <li>Pajak Prodi Baru Kedokteran sebesar Rp 1.820.000</li>
-                                    </ul>
-                                    </p>
-                                   <!--  <a href="{{ asset('unduhan/' . collect($udh)->pluck('nama_file')->first()) }}"
-                                        target="blank">
-                                        <button type="button" class="anima-button btn-sm btn">
-                                            <i class="fa fa-download"></i>
-                                            Contoh Bukti Potong Pajak (Unduh Disini)
-                                        </button>
-                                    </a> -->
+                                    {!! $biaya->first()->isi ?? '-' !!}
                                 </div>
                                 {{-- <hr class="space m" /> --}}
                             </div>
