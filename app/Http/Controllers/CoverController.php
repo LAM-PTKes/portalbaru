@@ -81,7 +81,6 @@ class CoverController extends Controller
             ->with('success', 'Berhasil... Simpan Data Ke Database');
     }
 
-
     /**
      * Display the specified resource.
      *
