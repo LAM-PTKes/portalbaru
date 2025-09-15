@@ -1465,18 +1465,7 @@ class AwalController extends Controller
             ->orderby('created_at', 'asc')
             ->first();
 
-        return view(
-            'awal.organisasi.organisasien',
-            compact(
-                'tentangs',
-                'organs',
-                'orgn',
-                'beritas',
-                'agendas',
-                'footers',
-                'ft'
-            )
-        );
+        return view('awal.organisasi.organisasien', compact('tentangs', 'organs', 'orgn', 'beritas', 'agendas', 'footers', 'ft'));
 
         // return $organs;
     }
@@ -1594,10 +1583,7 @@ class AwalController extends Controller
 
 
         // return $beritas;
-        return view(
-            'awal.berita.tberita',
-            compact('agendas', 'tentangs', 'beritas', 'pengumumans', 'footers', 'ft')
-        );
+        return view('awal.berita.tberita', compact('agendas', 'tentangs', 'beritas', 'pengumumans', 'footers', 'ft'));
     }
 
     /**

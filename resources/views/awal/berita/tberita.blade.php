@@ -40,12 +40,12 @@
                                             </a>
                                         </div>
                                         <a class="img-box" href="{{ route('dberita', $v->id) }}">
-                                            @if (!empty($v->file_gambar) || !file_exists('img/' . $v->file_gambar))
-                                                <img class="anima" src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $v->file_gambar]) }}"
-                                                    width="250px" height="250px" alt="" />
+                                            @if ($v->file_gambar && Storage::disk('nfs_documents')->exists('img/' . $v->file_gambar))
+                                                <img src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $v->file_gambar]) }}"
+                                                    alt="" width="250px" height="250px">
                                             @else
-                                                <img class="anima" src="{{ asset('img/kosong.png') }}" width="250px"
-                                                    height="250px" alt="" />
+                                                <img src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => 'kosong.png']) }}"
+                                                    alt="" width="250px" height="250px">
                                             @endif
                                         </a>
                                         <div class="advs-box-content">

@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-   <div class="section-empty section-item">
+    <div class="section-empty section-item">
         <div class="container content">
             <div class="row">
                 <div class="col-md-9 col-sm-12">
@@ -31,17 +31,18 @@
                                     <h2>Manual SIMAk IAAHEH</h2>
                                 </div>
                                 <div class="list-group accordion-list" data-time="1000" data-type='accordion'>
-                                    @foreach($manual as $v)
+                                    @foreach ($manual as $v)
                                         <div class="list-group-item">
-                                            <a>  {{ $v->judul }} </a>
+                                            <a> {{ $v->judul }} </a>
                                             <div class="panel">
                                                 <div class="inner">
                                                     <ul class="ul-dots">
                                                         <li>
-                                                            <a href="{{ route('secure.document.folder', ['folder' => 'unduhan', 'filename' => $v->nama_file]) }}" target="blank">
-                                                                 <button type="button" class="anima-button btn-sm btn">
+                                                            <a href="{{ route('secure.document.folder', ['folder' => 'unduhan', 'filename' => $v->nama_file]) }}"
+                                                                target="blank">
+                                                                <button type="button" class="anima-button btn-sm btn">
                                                                     <i class="fa fa-download"></i>
-                                                                        {{ $v->judul }}
+                                                                    {{ $v->judul }}
                                                                 </button>
                                                             </a>
                                                         </li>
@@ -59,21 +60,23 @@
                 </div>
                 <div class="col-md-3 col-sm-12 widget">
                     <div class="list-group latest-post-list list-blog">
-                       <div class="peny">
+                        <div class="peny">
                             <h3 class="penny">
-                              <i class="fa fa-newspaper-o"></i>
+                                <i class="fa fa-newspaper-o"></i>
                                 <a href="#" class="rsswidget">News IAAHEH</a>
                             </h3>
                         </div>
-                        @foreach($beritas as $berita)
+                        @foreach ($beritas as $berita)
                             <div class="list-group-item">
                                 <div class="row">
                                     <div class="col-md-4">
                                         <a class="img-box circle">
-                                            @if(!empty($berita->file_gambar) || file_exists('img/'. $berita->file_gambar))
-                                               <img src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $berita->file_gambar]) }}" alt="IAAHEH">
+                                            @if ($berita->file_gambar && Storage::disk('nfs_documents')->exists('img/' . $berita->file_gambar))
+                                                <img src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $berita->file_gambar]) }}"
+                                                    alt="">
                                             @else
-                                                <img src="{{ asset('img/kosong.png') }}" alt="IAAHEH">
+                                                <img src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => 'kosong.png']) }}"
+                                                    alt="">
                                             @endif
                                         </a>
                                     </div>
@@ -84,7 +87,7 @@
                                         <div class="tag-row icon-row">
                                             <span>
                                                 <i class="fa fa-calendar"></i>
-                                                {{ date('d F Y', strtotime($berita->created_at))}}
+                                                {{ date('d F Y', strtotime($berita->created_at)) }}
                                             </span>
                                         </div>
                                     </div>
@@ -101,16 +104,16 @@
                     <div class="list-group latest-post-list list-blog">
                         <div class="peny">
                             <h3 class="penny">
-                              <i class="fa fa-list-alt"></i>
+                                <i class="fa fa-list-alt"></i>
                                 <a href="#" class="rsswidget">Activity IAAHEH</a>
                             </h3>
                         </div>
-                        @foreach($agendas as $agenda)
+                        @foreach ($agendas as $agenda)
                             <div class="list-group-item">
                                 <div class="tag-row icon-row">
                                     <span>
                                         <i class="fa fa-calendar"></i>
-                                        {{ date('d F Y', strtotime($agenda->created_at) )}}
+                                        {{ date('d F Y', strtotime($agenda->created_at)) }}
                                     </span>
                                 </div>
                                 <a href="{{ route('tagendaen') }}">
@@ -122,7 +125,7 @@
                             </div>
                         @endforeach
                     </div>
-                     <a href="{{ route('tagendaen') }}">
+                    <a href="{{ route('tagendaen') }}">
                         <i class="fa fa-eye"> <u>Other Activity</u></i>
                     </a>
                 </div>
