@@ -61,6 +61,8 @@ class BeritaController extends Controller
     public function store(Request $request)
     {
 
+        // dd($request->isi);
+        // return $request->isi;
         // Validasi input
         $request->validate([
             'katbahasa'      => 'required|exists:kat_bahasas,id',

@@ -1,36 +1,39 @@
 @extends('awal.template.app')
 @section('title', 'LAM-PTKes | Lembaga Akreditasi Mandiri Pendidikan Tinggi Kesehatan Indonesia')
 @section('content')
-
     <div class="section-empty no-paddings">
         <div class="section-slider row-18 white">
             <div class="flexslider advanced-slider slider visible-dir-nav" data-options="animation:fade">
                 <ul class="slides">
-                  @foreach($headlines as $headline)
-                  <li data-slider-anima="fade-left" data-time="1000">
-                      <div class="section-slide">
-                          <div class="bg-cover" style="background-image:url({{ route('secure.document.folder', ['folder' => 'img', 'filename' => $headline->file_gambar]) }})">
-                          </div>
-                          <div class="container">
-                              <div class="container-middle">
-                                  <div class="container-inner text-left">
-                                      <hr class="space m visible-sm" />
-                                      <div class="row">
-                                          <div class="col-md-6 anima">
-                                              <h1 class="text-l text-normal text-m-xs"><a href="{{ route('dberita', $headline->id) }}">{{ $headline->judul }}</a></h1>
-                                              <hr class="space s" />
-                                              <a href="{{ route('dberita', $headline->id) }}" class="btn btn-lg btn-border">Selengkapnya</a>
-                                          </div>
-                                          <div class="col-md-6">
-                                          </div>
-                                      </div>
-                                      <hr class="space visible-sm" />
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </li>
-                  @endforeach
+                    @foreach ($headlines as $headline)
+                        <li data-slider-anima="fade-left" data-time="1000">
+                            <div class="section-slide">
+                                <div class="bg-cover"
+                                    style="background-image:url({{ route('secure.document.folder', ['folder' => 'img', 'filename' => $headline->file_gambar]) }})">
+                                </div>
+                                <div class="container">
+                                    <div class="container-middle">
+                                        <div class="container-inner text-left">
+                                            <hr class="space m visible-sm" />
+                                            <div class="row">
+                                                <div class="col-md-6 anima">
+                                                    <h1 class="text-l text-normal text-m-xs"><a
+                                                            href="{{ route('dberita', $headline->id) }}">{{ $headline->judul }}</a>
+                                                    </h1>
+                                                    <hr class="space s" />
+                                                    <a href="{{ route('dberita', $headline->id) }}"
+                                                        class="btn btn-lg btn-border">Selengkapnya</a>
+                                                </div>
+                                                <div class="col-md-6">
+                                                </div>
+                                            </div>
+                                            <hr class="space visible-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    @endforeach
                 </ul>
             </div>
         </div>
@@ -174,15 +177,17 @@
             </div>
         </div>
     </div>
-<div class="section-bg-color">
+    <div class="section-bg-color">
         <div class="container content">
             <div class="row vertical-row">
                 <div class="col-md-8 opacity-8">
                     <h2>Kunjungi Situs Akreditasi Internasional Kami.</h2>
-                    <p class="no-margins">Temukan informasi lengkap tentang akreditasi internasional dan standar kualitas global kami.</p>
+                    <p class="no-margins">Temukan informasi lengkap tentang akreditasi internasional dan standar kualitas
+                        global kami.</p>
                 </div>
                 <div class="col-md-4">
-                    <a href="https://iaaheh.org" target="_blank" class="btn btn-lg nav-justified">Akreditasi Internasional</a>
+                    <a href="https://iaaheh.org" target="_blank" class="btn btn-lg nav-justified">Akreditasi
+                        Internasional</a>
                 </div>
             </div>
         </div>
@@ -273,66 +278,84 @@
         </div>
     </div>
     <div class="section-bg-color">
-            <div class="container content">
-              <div class="col-md-12">
-                  <div class="title-base text-left">
-                      <hr />
-                      <h2>Seputar LAM-PTKes</h2>
-                      <p>Berita Terkini</p>
-                  </div>
+        <div class="container content">
+            <div class="col-md-12">
+                <div class="title-base text-left">
+                    <hr />
+                    <h2>Seputar LAM-PTKes</h2>
+                    <p>Berita Terkini</p>
+                </div>
                 <div class="row">
-                  @foreach ($brts as $brt)
-                    <div class="col-md-4 col-sm-6">
-                        <div class="advs-box advs-box-top-icon-img niche-box-post boxed-inverse" data-anima="scale-rotate" data-trigger="hover">
-                            <div class="block-infos">
-                                <div class="block-data">
-                                  <p class="bd-day">{{ date('d', strtotime($brt->created_at)) }}</p>
-                                  <p class="bd-month">{{ date('F Y', strtotime($brt->created_at)) }}</p>
+                    @foreach ($brts as $brt)
+                        <div class="col-md-4 col-sm-6">
+                            <div class="advs-box advs-box-top-icon-img niche-box-post boxed-inverse"
+                                data-anima="scale-rotate" data-trigger="hover">
+                                <div class="block-infos">
+                                    <div class="block-data">
+                                        <p class="bd-day">{{ date('d', strtotime($brt->created_at)) }}</p>
+                                        <p class="bd-month">{{ date('F Y', strtotime($brt->created_at)) }}</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <a class="img-box"><img class="anima" src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $brt->file_gambar]) }}" alt="{{ $brt->judul }}" /></a>
-                            <div class="advs-box-content">
-                                <h2><a class="text-m" href="{{ route('dberita', $brt->id) }}">{{ $brt->judul }}</a></h2>
-                                <div class="tag-row">
-                                    <span><i class="fa fa-bookmark"></i> <a href="#">{{ $kbrt->namakbrt }}</a></span>
-                                    <span><i class="fa fa-pencil"></i>Admin</span>
+
+                                @if ($brt->file_gambar && Storage::disk('nfs_documents')->exists('img/' . $brt->file_gambar))
+                                    <a class="img-box">
+                                        <img class="anima"
+                                            src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $brt->file_gambar]) }}"
+                                            alt="{{ $brt->judul }}" width="200px" height="200px" />
+                                    </a>
+                                @else
+                                    <a class="img-box">
+                                        <img class="anima"
+                                            src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => 'kosong.png']) }}"
+                                            alt="" width="200px" height="200px">
+                                    </a>
+                                @endif
+                                <div class="advs-box-content">
+                                    <h2><a class="text-m"
+                                            href="{{ route('dberita', $brt->id) }}">{{ $brt->judul }}</a></h2>
+                                    <div class="tag-row">
+                                        <span><i class="fa fa-bookmark"></i> <a
+                                                href="#">{{ $kbrt->namakbrt }}</a></span>
+                                        <span><i class="fa fa-pencil"></i>Admin</span>
+                                    </div>
+                                    <p class="niche-box-content">
+                                        {{-- <p class="niche-box-content"> --}}
+                                        {!! str_limit($brt->isi, 85) !!}
+                                        <a href="{{ route('dberita', $brt->id) }}">
+                                            Lihat Selengkapnya...
+                                        </a>
+                                        {{-- </p> --}}
+                                    </p>
                                 </div>
-                                <p class="niche-box-content">
-                                  {{-- <p class="niche-box-content"> --}}
-                                   {!! str_limit($brt->isi, 85) !!}
-                                  <a href="{{ route('dberita', $brt->id) }}">
-                                      Lihat Selengkapnya...
-                                  </a>
-                                  {{-- </p> --}}
-                                </p>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                     <div class="col-md-4 col-sm-12">
-                    <hr class="space visible-sm" />
-                    <div class="scroll-content scroll-mobile-disabled" data-height="405">
-                      @foreach ($artis as $side)
-                        <div class="advs-box advs-box-side-icon">
-                            <div class="caption-box">
-                                <h2 class="text-m"><a href="{{ route('dberita', $side->id) }}">{{ $side->judul }}</a></h2>
-                                <span class="extra-content">{{ date('d F Y', strtotime($side->created_at)) }}</span>
-                                <p>
-                                  {!! str_limit($side->isi, 120) !!}
-                                  <a href="{{ route('dberita', $side->id) }}"></a>
-                                </p>
-                            </div>
+                        <hr class="space visible-sm" />
+                        <div class="scroll-content scroll-mobile-disabled" data-height="405">
+                            @foreach ($artis as $side)
+                                <div class="advs-box advs-box-side-icon">
+                                    <div class="caption-box">
+                                        <h2 class="text-m"><a
+                                                href="{{ route('dberita', $side->id) }}">{{ $side->judul }}</a></h2>
+                                        <span
+                                            class="extra-content">{{ date('d F Y', strtotime($side->created_at)) }}</span>
+                                        <p>
+                                            {!! str_limit($side->isi, 120) !!}
+                                            <a href="{{ route('dberita', $side->id) }}"></a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <hr class="space m" />
+                            @endforeach
                         </div>
                         <hr class="space m" />
-                        @endforeach
+                        <a href="{{ route('tberita') }}" class="btn btn-lg">Berita Lainnya</a>
                     </div>
-                    <hr class="space m" />
-                    <a href="{{ route('tberita') }}" class="btn btn-lg">Berita Lainnya</a>
                 </div>
             </div>
-          </div>
-          </div>
         </div>
+    </div>
     <div class="section-bg-color">
         <div class="container content">
             <div class="row">
@@ -384,9 +407,11 @@
                         <div class="grid-box row" data-lightbox-anima="fade-left">
                             @foreach ($photos as $photo)
                                 <div class="grid-item col-md-3 col-sm-4">
-                                    <a class="img-box i-center" href="{{ route('secure.document.folder', ['folder' => 'album/gallery', 'filename' => $photo->nama_file]) }}">
+                                    <a class="img-box i-center"
+                                        href="{{ route('secure.document.folder', ['folder' => 'album/gallery', 'filename' => $photo->nama_file]) }}">
                                         <i class="fa fa-camera"></i>
-                                        <img src="{{ route('secure.document.folder', ['folder' => 'album/gallery', 'filename' => $photo->nama_file]) }}" alt="">
+                                        <img src="{{ route('secure.document.folder', ['folder' => 'album/gallery', 'filename' => $photo->nama_file]) }}"
+                                            alt="">
                                     </a>
                                 </div>
                             @endforeach
@@ -438,7 +463,8 @@
                             @foreach ($ftr as $fot)
                                 <li>
                                     <a class="img-box" href="{{ $fot->url }}" target="_BLANK">
-                                        <img src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $fot->nfile]) }}" alt="LAM-PTKes">
+                                        <img src="{{ route('secure.document.folder', ['folder' => 'img', 'filename' => $fot->nfile]) }}"
+                                            alt="LAM-PTKes">
                                     </a>
                                     <b>
                                         {{ $fot->nlink }}
